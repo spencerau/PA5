@@ -144,7 +144,32 @@ void Interface::printFaculty(int id) {
 }
 
 void Interface::addStudent() {
+    int id;
+    cout << "" << endl;
+    cin >> id;
 
+    string name;
+    cout << "" << endl;
+    cin >> name;
+
+    string level;
+    cout << "" << endl;
+    cin >> level;
+
+    string major;
+    cout << "" << endl;
+    cin >> major;
+
+    double gpa;
+    cout << "" << endl;
+    cin >> gpa;
+
+    int advisor;
+    cout << "" << endl;
+    cin >> advisor;
+
+    Student *newStudent = new Student(id, name, level, major, gpa, advisor);
+    students->insert(newStudent);
 }
 
 void Interface::deleteStudent(int id) {
@@ -152,7 +177,24 @@ void Interface::deleteStudent(int id) {
 }
 
 void Interface::addFaculty() {
+    int id;
+    cout << "" << endl;
+    cin >> id;
 
+    string name;
+    cout << "" << endl;
+    cin >> name;
+
+    string level;
+    cout << "" << endl;
+    cin >> level;
+
+    string dept;
+    cout << "" << endl;
+    cin >> dept;
+
+    Faculty *newFaculty = new Faculty(id, name, level, dept);
+    faculty->insert(newFaculty);
 }
 
 void Interface::deleteFaculty(int id) {
