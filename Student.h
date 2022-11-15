@@ -19,6 +19,10 @@ public:
     int getAdvisor();
     void changeAdvisor(int advisor);
     void printInfo();
+    // the overloading might be wrong
+    bool operator == (Student &rhs) {
+        return studentID == rhs.getid();
+    }
 private:
     int studentID;
     string name;
