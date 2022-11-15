@@ -7,19 +7,24 @@ and a list of integers corresponding to all of the faculty memberâ€™s adviseesâ€
 #define FACULTY_H
 
 #include <string>
+#include "DblList.h"
 
 using namespace std;
 
 class Faculty {
 public:
-    Faculty();
+    Faculty(int id, string name, string level, string dept);
     ~Faculty();
+    int getid();
+    void addStudent(int id);
+    void removeStudent(int id);
+    bool hasStudent(int id);
 private:
     int id;
     string name;
     string level;
     string dept;
-
+    DblList<int> *students;
 };
 
 #endif 
