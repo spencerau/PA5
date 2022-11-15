@@ -19,6 +19,8 @@ public:
     void addStudent(int id);
     void removeStudent(int id);
     bool hasStudent(int id);
+    void printInfo();
+    // need to implement changing the advisors for this faculty's students if this is deleted
 private:
     int id;
     string name;

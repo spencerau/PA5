@@ -22,7 +22,7 @@ Student::~Student() {
 
 }
 
-int Student::getID() {
+int Student::getid() {
     return studentID;
 }
 
@@ -40,4 +40,6 @@ void Student::printInfo() {
     cout << "Level: " << level << endl;
     cout << "Major: " << major << endl;
     cout << "GPA: " << GPA << endl;
+    cout << "Advisor: " << advisor << endl;
+    cout << endl;
 }

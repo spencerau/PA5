@@ -15,7 +15,7 @@ class Student {
 public:
     Student(string name, string level, string major, double GPA, int advisor);
     ~Student();
-    int getID();
+    int getid();
     int getAdvisor();
     void changeAdvisor(int advisor);
     void printInfo();

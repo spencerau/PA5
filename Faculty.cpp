@@ -34,3 +34,16 @@ bool Faculty::hasStudent(int id) {
     if (students->contains(id)) return true;
     else return false;
 }
+
+void Faculty::printInfo() {
+    cout << "Name: " << name << endl;
+    cout << "ID: " << id << endl;
+    cout << "Level: " << level << endl;
+    cout << "Department: " << dept << endl;
+    cout << "Advisees: " << endl;
+    // this prints out a list of the advisees only be ID
+    for (int i = 0; i < students->getSize(); i++) {
+        cout << students->get(i);
+    }
+    cout << endl;
+}
