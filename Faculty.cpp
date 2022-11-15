@@ -47,3 +47,7 @@ void Faculty::printInfo() {
     }
     cout << endl;
 }
+
+bool Faculty::operator == (Faculty &rhs) {
+    return id == rhs.getid();
+}

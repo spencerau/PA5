@@ -20,9 +20,7 @@ public:
     void removeStudent(int id);
     bool hasStudent(int id);
     void printInfo();
-    bool operator == (Faculty &rhs) {
-        return id == rhs.getid();
-    }
+    bool operator == (Faculty &rhs);
     // need to implement changing the advisors for this faculty's students if this is deleted
 private:
     int id;

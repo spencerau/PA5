@@ -10,7 +10,8 @@ the Faculty ID of their advisor. These are the only fields the class contains.
 
 using namespace std;
 
-Student::Student(string name, string level, string major, double GPA, int advisor) {
+Student::Student(int id, string name, string level, string major, double GPA, int advisor) {
+    this->id = id;
     this->name = name;
     this->level = level;
     this->major = major;
@@ -23,7 +24,7 @@ Student::~Student() {
 }
 
 int Student::getid() {
-    return studentID;
+    return id;
 }
 
 int Student::getAdvisor() {
@@ -36,10 +37,14 @@ void Student::changeAdvisor(int advisor) {
 
 void Student::printInfo() {
     cout << "Student Name: " << name << endl;
-    cout << "Student ID: " << studentID << endl;
+    cout << "Student ID: " << id << endl;
     cout << "Level: " << level << endl;
     cout << "Major: " << major << endl;
     cout << "GPA: " << GPA << endl;
     cout << "Advisor: " << advisor << endl;
     cout << endl;
+}
+
+bool Student::operator == (Student &rhs) {
+    return id == rhs.getid();
 }

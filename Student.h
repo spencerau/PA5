@@ -13,18 +13,16 @@ using namespace std;
 
 class Student {
 public:
-    Student(string name, string level, string major, double GPA, int advisor);
+    Student(int id, string name, string level, string major, double GPA, int advisor);
     ~Student();
     int getid();
     int getAdvisor();
     void changeAdvisor(int advisor);
     void printInfo();
     // the overloading might be wrong
-    bool operator == (Student &rhs) {
-        return studentID == rhs.getid();
-    }
+    bool operator == (Student &rhs);
 private:
-    int studentID;
+    int id;
     string name;
     string level;
     string major;
