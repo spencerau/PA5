@@ -31,8 +31,8 @@ tables at the time the program was terminated. (This is the information from opt
 using namespace std;
 
 Interface::Interface() {
-    this->students = new ScapegoatST<Student*>;
-    this->faculty = new ScapegoatST<Faculty*>;
+    this->students = new ScapegoatST<Student*>();
+    this->faculty = new ScapegoatST<Faculty*>();
 }
 
 Interface::~Interface() {
