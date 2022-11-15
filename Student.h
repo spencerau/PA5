@@ -21,6 +21,8 @@ public:
     void printInfo();
     // the overloading might be wrong
     bool operator == (Student &rhs);
+    bool operator > (Student &rhs);
+    bool operator < (Student &rhs);
 private:
     int id;
     string name;

@@ -48,3 +48,12 @@ void Student::printInfo() {
 bool Student::operator == (Student &rhs) {
     return id == rhs.getid();
 }
+
+bool Student::operator > (Student &rhs) {
+    return id > rhs.getid();
+}
+
+bool Student::operator < (Student &rhs) {
+    return id < rhs.getid();
+
+}

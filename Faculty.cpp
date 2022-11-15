@@ -51,3 +51,12 @@ void Faculty::printInfo() {
 bool Faculty::operator == (Faculty &rhs) {
     return id == rhs.getid();
 }
+
+bool Faculty::operator > (Faculty &rhs) {
+    return id > rhs.getid();
+}
+
+bool Faculty::operator < (Faculty &rhs) {
+    return id < rhs.getid();
+
+}
