@@ -1,13 +1,13 @@
-#ifndef BST_H
-#define BST_H
+#ifndef SCAPEGOATST_H
+#define SCAPEGOATST_H
 
 #include "TreeNode.h"
 
 template <typename T>
-class BST{
+class ScapegoatST{
 public:
-  BST();
-  virtual ~BST();
+  ScapegoatST();
+  virtual ~ScapegoatST();
   int getSize();
   void insert(T d);
   void remove(T d);
@@ -33,25 +33,25 @@ private:
 };
 
 template <typename T>
-BST<T>::BST(){
+ScapegoatST<T>::ScapegoatST(){
   m_root = NULL;
   m_size = 0;
 }
 
 template <typename T>
-BST<T>::~BST(){
+ScapegoatST<T>::~ScapegoatST(){
   if(m_root != NULL){
     delete m_root;
   }
 }
 
 template <typename T>
-int BST<T>::getSize(){
+int ScapegoatST<T>::getSize(){
   return m_size;
 }
 
 template <typename T>
-void BST<T>::insert(T d){
+void ScapegoatST<T>::insert(T d){
   TreeNode<T>* newNode = new TreeNode<T>(d);
   insertHelper(m_root, newNode);
   ++m_size;
@@ -59,7 +59,7 @@ void BST<T>::insert(T d){
 }
 
 template <typename T>
-void BST<T>::insertHelper(TreeNode<T>*& subTreeRoot, TreeNode<T>* newNode){
+void ScapegoatST<T>::insertHelper(TreeNode<T>*& subTreeRoot, TreeNode<T>* newNode){
   if(subTreeRoot == NULL){
     subTreeRoot = newNode;
   } else if(newNode->m_data < subTreeRoot->m_data){
@@ -70,14 +70,14 @@ void BST<T>::insertHelper(TreeNode<T>*& subTreeRoot, TreeNode<T>* newNode){
 }
 
 template <typename T>
-bool BST<T>::contains(T d){
+bool ScapegoatST<T>::contains(T d){
   TreeNode<T>* newNode = new TreeNode<T>(d);
   return containsHelper(m_root, newNode);
 
 }
 
 template <typename T>
-bool BST<T>::containsHelper(TreeNode<T>* subTreeRoot, TreeNode<T>* newNode){
+bool ScapegoatST<T>::containsHelper(TreeNode<T>* subTreeRoot, TreeNode<T>* newNode){
   if(subTreeRoot == NULL){
     return false;
   } else if(newNode->m_data == subTreeRoot->m_data){
@@ -90,12 +90,12 @@ bool BST<T>::containsHelper(TreeNode<T>* subTreeRoot, TreeNode<T>* newNode){
 }
 
 template <typename T>
-void BST<T>::printTreeInOrder(){
+void ScapegoatST<T>::printTreeInOrder(){
   printTreeInOrderHelper(m_root);
 }
 
 template <typename T>
-void BST<T>::printTreeInOrderHelper(TreeNode<T>* subTreeRoot){
+void ScapegoatST<T>::printTreeInOrderHelper(TreeNode<T>* subTreeRoot){
   if(subTreeRoot != NULL){
     printTreeInOrderHelper(subTreeRoot->m_left);
     cout << subTreeRoot->m_data << endl;
@@ -104,12 +104,12 @@ void BST<T>::printTreeInOrderHelper(TreeNode<T>* subTreeRoot){
 }
 
 template <typename T>
-void BST<T>::printTreePostOrder(){
+void ScapegoatST<T>::printTreePostOrder(){
   printTreePostOrderHelper(m_root);
 }
 
 template <typename T>
-void BST<T>::printTreePostOrderHelper(TreeNode<T>* subTreeRoot){
+void ScapegoatST<T>::printTreePostOrderHelper(TreeNode<T>* subTreeRoot){
   if(subTreeRoot != NULL){
     printTreeInOrderHelper(subTreeRoot->m_left);
     printTreeInOrderHelper(subTreeRoot->m_right);
@@ -121,7 +121,7 @@ void BST<T>::printTreePostOrderHelper(TreeNode<T>* subTreeRoot){
 
 /*
 template <typename T>
-bool BST::iterativeContains(T d){
+bool ScapegoatST::iterativeContains(T d){
   if(m_root == NULL){
     return false;
   }
@@ -151,13 +151,13 @@ bool BST::iterativeContains(T d){
 */
 
 template <typename T>
-T BST<T>::getMin(){
+T ScapegoatST<T>::getMin(){
   //check if empty
   return getMinHelper(m_root);
 }
 
 template <typename T>
-T BST<T>::getMinHelper(TreeNode<T>* subTreeRoot){
+T ScapegoatST<T>::getMinHelper(TreeNode<T>* subTreeRoot){
   if(subTreeRoot->m_left==NULL){
     return subTreeRoot->m_data;
   } else{
@@ -166,13 +166,13 @@ T BST<T>::getMinHelper(TreeNode<T>* subTreeRoot){
 }
 
 template <typename T>
-T BST<T>::getMax(){
+T ScapegoatST<T>::getMax(){
   //check if empty
   return getMaxHelper(m_root);
 }
 
 template <typename T>
-T BST<T>::getMaxHelper(TreeNode<T>* subTreeRoot){
+T ScapegoatST<T>::getMaxHelper(TreeNode<T>* subTreeRoot){
   if(subTreeRoot->m_right==NULL){
     return subTreeRoot->m_data;
   } else{
@@ -182,13 +182,13 @@ T BST<T>::getMaxHelper(TreeNode<T>* subTreeRoot){
 }
 
 template <typename T>
-T BST<T>::getMedian(){
+T ScapegoatST<T>::getMedian(){
   //check if empty
   return m_root->m_data;
 }
 
 template <typename T>
-void BST<T>::findTarget(T key, TreeNode<T>*& target, TreeNode<T>*& parent){
+void ScapegoatST<T>::findTarget(T key, TreeNode<T>*& target, TreeNode<T>*& parent){
   while(target != NULL && target->m_data != key){
     parent = target;
     if(key < target->m_data){
@@ -200,7 +200,7 @@ void BST<T>::findTarget(T key, TreeNode<T>*& target, TreeNode<T>*& parent){
 }
 
 template <typename T>
-TreeNode<T>* BST<T>::getSuccessor(TreeNode<T>* rightChild){
+TreeNode<T>* ScapegoatST<T>::getSuccessor(TreeNode<T>* rightChild){
   while(rightChild->m_left != NULL){
     rightChild = rightChild->m_left;
   }
@@ -208,7 +208,7 @@ TreeNode<T>* BST<T>::getSuccessor(TreeNode<T>* rightChild){
 }
 
 template <typename T>
-void BST<T>::remove(T d){
+void ScapegoatST<T>::remove(T d){
   //check if empty
   TreeNode<T>* target = NULL;
   TreeNode<T>* parent = NULL;

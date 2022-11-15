@@ -31,13 +31,13 @@ tables at the time the program was terminated. (This is the information from opt
 using namespace std;
 
 Interface::Interface() {
-    // intialize student tree
-    // intialize faculty tree
+    this->students = new ScapegoatST<Student*>;
+    this->faculty = new ScapegoatST<Faculty*>;
 }
 
 Interface::~Interface() {
-    // delete student tree
-    // delete faculty tree
+    delete students;
+    delete faculty;
 }
 
 void Interface::run() {
@@ -168,5 +168,5 @@ void Interface::removeAdvisee(int studentid, int facultyid) {
 }
 
 void Interface::writeToFile() {
-    
+
 }

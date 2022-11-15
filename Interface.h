@@ -29,6 +29,9 @@ tables at the time the program was terminated. (This is the information from opt
 #define INTERFACE_H
 
 #include <string>
+#include "Student.h"
+#include "Faculty.h"
+#include "ScapegoatST.h"
 
 using namespace std;
 
@@ -37,10 +40,10 @@ public:
     Interface();
     ~Interface();
     void run();
-
+    
 private:
-    // student tree
-    // faculty tree
+    ScapegoatST<Student*> *students;
+    ScapegoatST<Faculty*> *faculty;
 
     void printOptions();
     void printAllStudents();
