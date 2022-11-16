@@ -14,8 +14,6 @@ public:
 
   template <typename S>
   friend class BST;
-
-private:
   T m_data;
   TreeNode<T>* m_left;
   TreeNode<T>* m_right;

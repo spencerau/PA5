@@ -4,7 +4,8 @@
 #include "TreeNode.h"
 
 template <typename T>
-class ScapegoatST{
+class ScapegoatST
+{
 public:
   ScapegoatST();
   virtual ~ScapegoatST();
@@ -19,84 +20,112 @@ public:
   T getMedian();
 
 private:
+  int m_del;
+  int m_depth;
   int m_size;
-  TreeNode<T>* m_root;
-  T getMinHelper(TreeNode<T>* subTreeRoot);
-  T getMaxHelper(TreeNode<T>* subTreeRoot);
-  void insertHelper(TreeNode<T>*& subTreeRoot, TreeNode<T>* newNode);
-  bool containsHelper(TreeNode<T>* subTreeRoot, TreeNode<T>* newNode);
-  void printTreeInOrderHelper(TreeNode<T>* subTreeRoot);
-  void printTreePostOrderHelper(TreeNode<T>* subTreeRoot);
-  void findTarget(T key, TreeNode<T>*& target, TreeNode<T>*& parent);
-  TreeNode<T>* getSuccessor(TreeNode<T>* rightChild);
-
+  TreeNode<T> *m_root;
+  T getMinHelper(TreeNode<T> *subTreeRoot);
+  T getMaxHelper(TreeNode<T> *subTreeRoot);
+  int insertHelper(TreeNode<T> *&subTreeRoot, TreeNode<T> *newNode);
+  bool containsHelper(TreeNode<T> *subTreeRoot, TreeNode<T> *newNode);
+  void printTreeInOrderHelper(TreeNode<T> *subTreeRoot);
+  void printTreePostOrderHelper(TreeNode<T> *subTreeRoot);
+  void findTarget(T key, TreeNode<T> *&target, TreeNode<T> *&parent);
+  TreeNode<T> *getSuccessor(TreeNode<T> *rightChild);
 };
 
 template <typename T>
-ScapegoatST<T>::ScapegoatST(){
+ScapegoatST<T>::ScapegoatST()
+{
   m_root = NULL;
   m_size = 0;
 }
 
 template <typename T>
-ScapegoatST<T>::~ScapegoatST(){
-  if(m_root != NULL){
+ScapegoatST<T>::~ScapegoatST()
+{
+  if (m_root != NULL)
+  {
     delete m_root;
   }
 }
 
 template <typename T>
-int ScapegoatST<T>::getSize(){
+int ScapegoatST<T>::getSize()
+{
   return m_size;
 }
 
 template <typename T>
-void ScapegoatST<T>::insert(T d){
-  TreeNode<T>* newNode = new TreeNode<T>(d);
+void ScapegoatST<T>::insert(T d)
+{
+  TreeNode<T> *newNode = new TreeNode<T>(d);
   insertHelper(m_root, newNode);
   ++m_size;
-
 }
 
 template <typename T>
-void ScapegoatST<T>::insertHelper(TreeNode<T>*& subTreeRoot, TreeNode<T>* newNode){
-  if(subTreeRoot == NULL){
+int ScapegoatST<T>::insertHelper(TreeNode<T> *&subTreeRoot, TreeNode<T> *newNode)
+{
+  if (m_root == NULL)
+  {
+    m_root = newNode;
+  }
+  else if (subTreeRoot == NULL)
+  {
     subTreeRoot = newNode;
-  } else if(newNode->m_data < subTreeRoot->m_data){
-    insertHelper(subTreeRoot->m_left,newNode);
-  } else{
-    insertHelper(subTreeRoot->m_right,newNode);
+  }
+  else if (newNode->m_data < subTreeRoot->m_data)
+  {
+    m_depth++;
+    insertHelper(subTreeRoot->m_left, newNode);
+  }
+  else
+  {
+    m_depth++;
+    insertHelper(subTreeRoot->m_right, newNode);
   }
 }
 
 template <typename T>
-bool ScapegoatST<T>::contains(T d){
-  TreeNode<T>* newNode = new TreeNode<T>(d);
+bool ScapegoatST<T>::contains(T d)
+{
+  TreeNode<T> *newNode = new TreeNode<T>(d);
   return containsHelper(m_root, newNode);
-
 }
 
 template <typename T>
-bool ScapegoatST<T>::containsHelper(TreeNode<T>* subTreeRoot, TreeNode<T>* newNode){
-  if(subTreeRoot == NULL){
+bool ScapegoatST<T>::containsHelper(TreeNode<T> *subTreeRoot, TreeNode<T> *newNode)
+{
+  if (subTreeRoot == NULL)
+  {
     return false;
-  } else if(newNode->m_data == subTreeRoot->m_data){
+  }
+  else if (newNode->m_data == subTreeRoot->m_data)
+  {
     return true;
-  } else if(newNode->m_data < subTreeRoot->m_data){
-    return containsHelper(subTreeRoot->m_left,newNode);
-  } else{
-    return containsHelper(subTreeRoot->m_right,newNode);
+  }
+  else if (newNode->m_data < subTreeRoot->m_data)
+  {
+    return containsHelper(subTreeRoot->m_left, newNode);
+  }
+  else
+  {
+    return containsHelper(subTreeRoot->m_right, newNode);
   }
 }
 
 template <typename T>
-void ScapegoatST<T>::printTreeInOrder(){
+void ScapegoatST<T>::printTreeInOrder()
+{
   printTreeInOrderHelper(m_root);
 }
 
 template <typename T>
-void ScapegoatST<T>::printTreeInOrderHelper(TreeNode<T>* subTreeRoot){
-  if(subTreeRoot != NULL){
+void ScapegoatST<T>::printTreeInOrderHelper(TreeNode<T> *subTreeRoot)
+{
+  if (subTreeRoot != NULL)
+  {
     printTreeInOrderHelper(subTreeRoot->m_left);
     cout << subTreeRoot->m_data << endl;
     printTreeInOrderHelper(subTreeRoot->m_right);
@@ -104,20 +133,21 @@ void ScapegoatST<T>::printTreeInOrderHelper(TreeNode<T>* subTreeRoot){
 }
 
 template <typename T>
-void ScapegoatST<T>::printTreePostOrder(){
+void ScapegoatST<T>::printTreePostOrder()
+{
   printTreePostOrderHelper(m_root);
 }
 
 template <typename T>
-void ScapegoatST<T>::printTreePostOrderHelper(TreeNode<T>* subTreeRoot){
-  if(subTreeRoot != NULL){
+void ScapegoatST<T>::printTreePostOrderHelper(TreeNode<T> *subTreeRoot)
+{
+  if (subTreeRoot != NULL)
+  {
     printTreeInOrderHelper(subTreeRoot->m_left);
     printTreeInOrderHelper(subTreeRoot->m_right);
     cout << subTreeRoot->m_data << endl;
   }
 }
-
-
 
 /*
 template <typename T>
@@ -151,109 +181,146 @@ bool ScapegoatST::iterativeContains(T d){
 */
 
 template <typename T>
-T ScapegoatST<T>::getMin(){
-  //check if empty
+T ScapegoatST<T>::getMin()
+{
+  // check if empty
   return getMinHelper(m_root);
 }
 
 template <typename T>
-T ScapegoatST<T>::getMinHelper(TreeNode<T>* subTreeRoot){
-  if(subTreeRoot->m_left==NULL){
+T ScapegoatST<T>::getMinHelper(TreeNode<T> *subTreeRoot)
+{
+  if (subTreeRoot->m_left == NULL)
+  {
     return subTreeRoot->m_data;
-  } else{
+  }
+  else
+  {
     return getMinHelper(subTreeRoot->m_left);
   }
 }
 
 template <typename T>
-T ScapegoatST<T>::getMax(){
-  //check if empty
+T ScapegoatST<T>::getMax()
+{
+  // check if empty
   return getMaxHelper(m_root);
 }
 
 template <typename T>
-T ScapegoatST<T>::getMaxHelper(TreeNode<T>* subTreeRoot){
-  if(subTreeRoot->m_right==NULL){
+T ScapegoatST<T>::getMaxHelper(TreeNode<T> *subTreeRoot)
+{
+  if (subTreeRoot->m_right == NULL)
+  {
     return subTreeRoot->m_data;
-  } else{
+  }
+  else
+  {
     return getMaxHelper(subTreeRoot->m_right);
   }
-
 }
 
 template <typename T>
-T ScapegoatST<T>::getMedian(){
-  //check if empty
+T ScapegoatST<T>::getMedian()
+{
+  // check if empty
   return m_root->m_data;
 }
 
 template <typename T>
-void ScapegoatST<T>::findTarget(T key, TreeNode<T>*& target, TreeNode<T>*& parent){
-  while(target != NULL && target->m_data != key){
+void ScapegoatST<T>::findTarget(T key, TreeNode<T> *&target, TreeNode<T> *&parent)
+{
+  while (target != NULL && target->m_data != key)
+  {
     parent = target;
-    if(key < target->m_data){
+    if (key < target->m_data)
+    {
       target = target->m_left;
-    } else{
+    }
+    else
+    {
       target = target->m_right;
     }
   }
 }
 
 template <typename T>
-TreeNode<T>* ScapegoatST<T>::getSuccessor(TreeNode<T>* rightChild){
-  while(rightChild->m_left != NULL){
+TreeNode<T> *ScapegoatST<T>::getSuccessor(TreeNode<T> *rightChild)
+{
+  while (rightChild->m_left != NULL)
+  {
     rightChild = rightChild->m_left;
   }
   return rightChild;
 }
 
 template <typename T>
-void ScapegoatST<T>::remove(T d){
-  //check if empty
-  TreeNode<T>* target = NULL;
-  TreeNode<T>* parent = NULL;
+void ScapegoatST<T>::remove(T d)
+{
+  // check if empty
+  TreeNode<T> *target = NULL;
+  TreeNode<T> *parent = NULL;
   target = m_root;
-  findTarget(d,target,parent);
-  if(target == NULL){ //value wasn't in tree, othing to do
+  findTarget(d, target, parent);
+  if (target == NULL)
+  { // value wasn't in tree, othing to do
     return;
   }
-  //check if leaf (including the root)
-  if(target->m_left == NULL && target->m_right == NULL){ //no children, it's a leaf
-    if(target == m_root){ //leaf is the root of tree
+  // check if leaf (including the root)
+  if (target->m_left == NULL && target->m_right == NULL)
+  { // no children, it's a leaf
+    if (target == m_root)
+    { // leaf is the root of tree
       m_root = NULL;
-    } else{ //it's not the root
-      if(target ==  parent->m_left){
+    }
+    else
+    { // it's not the root
+      if (target == parent->m_left)
+      {
         parent->m_left = NULL;
-      } else{
+      }
+      else
+      {
         parent->m_right = NULL;
       }
     }
-    //delete target; //free the memory
-
-  } else if(target->m_left != NULL && target->m_right != NULL){ //2 child case
-    TreeNode<T>* suc = getSuccessor(target->m_right);
+    // delete target; //free the memory
+  }
+  else if (target->m_left != NULL && target->m_right != NULL)
+  { // 2 child case
+    TreeNode<T> *suc = getSuccessor(target->m_right);
     T value = suc->m_data;
-    remove(value); //remove successor treenode
+    remove(value); // remove successor treenode
     target->m_data = value;
-
-  } else{ //1 child
-    TreeNode<T>* child;
-    if(target->m_left != NULL){
+  }
+  else
+  { // 1 child
+    TreeNode<T> *child;
+    if (target->m_left != NULL)
+    {
       child = target->m_left;
-    } else{
+    }
+    else
+    {
       child = target->m_right;
     }
-    if(target ==  m_root){
+    if (target == m_root)
+    {
       m_root = child;
-    } else{
-      if(target == parent->m_left){
-        //cout << "I'm here!" << endl;
+    }
+    else
+    {
+      if (target == parent->m_left)
+      {
+        // cout << "I'm here!" << endl;
         parent->m_left = child;
-      } else{
+      }
+      else
+      {
         parent->m_right = child;
       }
     }
-      //delete target;
+    // delete target;
   }
   --m_size;
 }

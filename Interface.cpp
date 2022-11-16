@@ -45,7 +45,9 @@ void Interface::run() {
     while (result != 11) {
         printOptions();
         cin >> result;
-
+        int facultyid;
+        int studentid;
+        int id;
         switch (result) {
             case 1:
                 printAllStudents();
@@ -55,13 +57,11 @@ void Interface::run() {
                 break;
             case 3:
                 cout << "Enter in the Student ID You Wish to Display:" << endl;
-                int id;
                 cin >> id;
                 printStudent(id);
                 break;
             case 4:
                 cout << "Enter in the Faculty ID You Wish to Display:" << endl;
-                int id;
                 cin >> id;
                 printFaculty(id);
                 break;
@@ -70,7 +70,6 @@ void Interface::run() {
                 break;
             case 6:
                 cout << "Enter in the Student ID You Wish to Delete" << endl;
-                int id;
                 cin >> id;
                 deleteStudent(id);
                 break;
@@ -79,25 +78,20 @@ void Interface::run() {
                 break;
             case 8:
                 cout << "Enter in the Faculty ID You Wish to Delete" << endl;
-                int id;
                 cin >> id;
                 deleteFaculty(id);
                 break;
             case 9:
                 cout << "Enter in the Student ID" << endl;
-                int studentid;
                 cin >> studentid;
                 cout << "Enter in the Faculty ID" << endl;
-                int facultyid;
                 cin >> facultyid;
                 changeAdvisor(studentid, facultyid);
                 break;
             case 10:
                 cout << "Enter in the Student ID" << endl;
-                int studentid;
                 cin >> studentid;
                 cout << "Enter in the Faculty ID" << endl;
-                int facultyid;
                 cin >> facultyid;
                 removeAdvisee(studentid, facultyid);
                 break;
