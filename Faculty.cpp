@@ -48,6 +48,20 @@ void Faculty::printInfo() {
     cout << endl;
 }
 
+void Faculty::printToFile(ofstream writer) {
+    writer << "Name: " << name << endl;
+    writer << "ID: " << id << endl;
+    writer << "Level: " << level << endl;
+    writer << "Department: " << dept << endl;
+    writer << "Advisees: " << endl;
+    // this prints out a list of the advisees only be ID
+    for (int i = 0; i < students->getSize(); i++) {
+        writer << students->get(i);
+    }
+    writer << endl;
+}
+
+
 DblList<int>* Faculty::getAdvisees() {
     return students;
 }

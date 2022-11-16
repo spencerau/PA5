@@ -2,6 +2,7 @@
 #define SCAPEGOATST_H
 
 #include "TreeNode.h"
+#include <fstream>
 
 template <typename T>
 class ScapegoatST
@@ -18,6 +19,7 @@ public:
     T getMin();
     T getMax();
     T getMedian();
+	void printToFile();
     T& getByID(int id);
     bool containsByID(int id);
 	void removeByID(int id);
@@ -35,6 +37,7 @@ private:
 	void printTreePostOrderHelper(TreeNode<T> *subTreeRoot);
 	void findTarget(T key, TreeNode<T> *&target, TreeNode<T> *&parent);
 	TreeNode<T> *getSuccessor(TreeNode<T> *rightChild);
+	void printToFileHelper(TreeNode<T> *subTreeRoot, ofstream writer);
 };
 
 template <typename T>
@@ -329,7 +332,24 @@ void ScapegoatST<T>::remove(T d)
   --m_size;
 }
 
-// need to implement this
+template <typename T>
+void ScapegoatST<T>::printToFile() {
+	ofstream writer("runLog.txt");
+	printToFileHelper(m_root);
+	writer.close();
+}
+
+template <typename T>
+void ScapegoatST<T>::printToFileHelper(TreeNode<T> *subTreeRoot, ofstream writer) {
+	if (subTreeRoot != NULL) {
+    printToFileHelper(subTreeRoot->m_left, writer);
+    //cout << subTreeRoot->m_data << endl;
+	subTreeRoot.printToFile(writer);
+    printToFileHelper(subTreeRoot->m_right, writer);
+	}
+}
+
+// need to implement these three
 template <typename T>
 T& ScapegoatST<T>::getByID(int id) {
   if (m_root->getid() == id) return m_root;

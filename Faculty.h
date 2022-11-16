@@ -8,6 +8,7 @@ and a list of integers corresponding to all of the faculty memberâ€™s adviseesâ€
 
 #include <string>
 #include "DblList.h"
+#include <fstream>
 
 using namespace std;
 
@@ -20,6 +21,7 @@ public:
     void removeStudent(int id);
     bool hasStudent(int id);
     void printInfo();
+    void printToFile(ofstream writer);
     bool operator == (Faculty &rhs);
     bool operator > (Faculty &rhs);
     bool operator < (Faculty &rhs);

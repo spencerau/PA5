@@ -262,5 +262,6 @@ int Interface::promptForFaculty(int flag) {
     return id;}
 
 void Interface::writeToFile() {
-
+    students->printToFile();
+    faculty->printToFile();
 }

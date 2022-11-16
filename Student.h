@@ -8,6 +8,7 @@ the Faculty ID of their advisor. These are the only fields the class contains.
 #define STUDENT_H
 
 #include <string>
+#include <fstream>
 
 using namespace std;
 
@@ -19,6 +20,7 @@ public:
     int getAdvisor();
     void changeAdvisor(int advisor);
     void printInfo();
+    void printToFile(ofstream writer);
     // the overloading might be wrong
     bool operator == (Student &rhs);
     bool operator > (Student &rhs);

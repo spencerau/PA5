@@ -45,6 +45,17 @@ void Student::printInfo() {
     cout << endl;
 }
 
+void Student::printToFile(ofstream writer) {
+    writer << "Student Name: " << name << endl;
+    writer << "Student ID: " << id << endl;
+    writer << "Level: " << level << endl;
+    writer << "Major: " << major << endl;
+    writer << "GPA: " << GPA << endl;
+    writer << "Advisor: " << advisor << endl;
+    writer << endl; 
+}
+
+
 bool Student::operator == (Student &rhs) {
     return id == rhs.getid();
 }
