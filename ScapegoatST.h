@@ -130,7 +130,8 @@ void ScapegoatST<T>::printTreeInOrderHelper(TreeNode<T> *subTreeRoot)
   if (subTreeRoot != NULL)
   {
     printTreeInOrderHelper(subTreeRoot->m_left);
-    cout << subTreeRoot->m_data << endl;
+    //cout << subTreeRoot->m_data << endl;
+	subTreeRoot->printInfo();
     printTreeInOrderHelper(subTreeRoot->m_right);
   }
 }

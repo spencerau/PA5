@@ -117,19 +117,28 @@ void Interface::printOptions() {
 }
 
 void Interface::printAllStudents() {
-
+    students->printTreeInOrder();
+    /*
+    for (int i = 0; i < students->getSize(); i++) {
+        students.
+    }
+    */
 }
 
 void Interface::printAllFaculty() {
-
+    faculty->printTreeInOrder();
 }
 
 void Interface::printStudent(int id) {
-
+    Student *student = students->getByID(id);
+    student->printInfo();
+    delete student;
 }
 
 void Interface::printFaculty(int id) {
-
+    Faculty *advisor = faculty->getByID(id);
+    advisor->printInfo();
+    delete advisor;
 }
 
 void Interface::addStudent() {
