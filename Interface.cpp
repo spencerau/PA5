@@ -57,13 +57,13 @@ void Interface::run() {
                 printAllFaculty();
                 break;
             case 3:
-                cout << "Enter in the Student ID You Wish to Display:" << endl;
-                cin >> id;
+                cout << "Display Student:" << endl;
+                id = promptForStudent(0);
                 printStudent(id);
                 break;
             case 4:
-                cout << "Enter in the Faculty ID You Wish to Display:" << endl;
-                cin >> id;
+                cout << "Display Faculty" << endl;
+                id = promptForFaculty(0);
                 printFaculty(id);
                 break;
             case 5:

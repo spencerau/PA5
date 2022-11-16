@@ -335,7 +335,7 @@ void ScapegoatST<T>::remove(T d)
 template <typename T>
 void ScapegoatST<T>::printToFile() {
 	ofstream writer("runLog.txt");
-	printToFileHelper(m_root);
+	printToFileHelper(m_root, writer);
 	writer.close();
 }
 
@@ -344,7 +344,7 @@ void ScapegoatST<T>::printToFileHelper(TreeNode<T> *subTreeRoot, ofstream writer
 	if (subTreeRoot != NULL) {
     printToFileHelper(subTreeRoot->m_left, writer);
     //cout << subTreeRoot->m_data << endl;
-	subTreeRoot.printToFile(writer);
+	subTreeRoot->printToFile(writer);
     printToFileHelper(subTreeRoot->m_right, writer);
 	}
 }
