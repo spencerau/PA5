@@ -56,6 +56,8 @@ private:
     void deleteFaculty(int id);
     void changeAdvisor(int studentid, int facultyid);
     void removeAdvisee(int studentid, int facultyid);
+    int promptForStudent(int flag);
+    int promptForFaculty(int flag);
     void writeToFile();
 };
 

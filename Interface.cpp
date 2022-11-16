@@ -42,12 +42,13 @@ Interface::~Interface() {
 
 void Interface::run() {
     int result = -1;
+    int facultyid;
+    int studentid;
+    int id;
     while (result != 11) {
         printOptions();
         cin >> result;
-        int facultyid;
-        int studentid;
-        int id;
+        // flag: 0 = DNE, 1 = exists already
         switch (result) {
             case 1:
                 printAllStudents();
@@ -69,30 +70,24 @@ void Interface::run() {
                 addStudent();
                 break;
             case 6:
-                cout << "Enter in the Student ID You Wish to Delete" << endl;
-                cin >> id;
+                id = promptForStudent(0);
                 deleteStudent(id);
                 break;
             case 7:
                 addFaculty();
                 break;
             case 8:
-                cout << "Enter in the Faculty ID You Wish to Delete" << endl;
-                cin >> id;
+                id = promptForFaculty(0);
                 deleteFaculty(id);
                 break;
             case 9:
-                cout << "Enter in the Student ID" << endl;
-                cin >> studentid;
-                cout << "Enter in the Faculty ID" << endl;
-                cin >> facultyid;
+                int studentid = promptForStudent(0);
+                int facultyid = promptForFaculty(0);
                 changeAdvisor(studentid, facultyid);
                 break;
             case 10:
-                cout << "Enter in the Student ID" << endl;
-                cin >> studentid;
-                cout << "Enter in the Faculty ID" << endl;
-                cin >> facultyid;
+                studentid = promptForStudent(0);
+                facultyid = promptForFaculty(0);
                 removeAdvisee(studentid, facultyid);
                 break;
             case 11:
@@ -138,53 +133,53 @@ void Interface::printFaculty(int id) {
 }
 
 void Interface::addStudent() {
-    int id;
-    cout << "" << endl;
-    cin >> id;
+    int id = promptForStudent(1);
 
     string name;
-    cout << "" << endl;
+    cout << "Enter in the Student Name" << endl;
     cin >> name;
 
     string level;
-    cout << "" << endl;
+    cout << "Enter in the Class Level" << endl;
     cin >> level;
 
     string major;
-    cout << "" << endl;
+    cout << "Enter in the Major" << endl;
     cin >> major;
 
     double gpa;
-    cout << "" << endl;
+    cout << "Enter in the GPA" << endl;
     cin >> gpa;
 
-    int advisor;
-    cout << "" << endl;
-    cin >> advisor;
+    int advisorid = promptForFaculty(0);
+    // add student id to advisor's advisees field
+    Faculty &advisor = *faculty->getByID(advisorid);
+    advisor.addStudent(id);
 
-    Student *newStudent = new Student(id, name, level, major, gpa, advisor);
+    Student *newStudent = new Student(id, name, level, major, gpa, advisorid);
     students->insert(newStudent);
 }
 
 void Interface::deleteStudent(int id) {
-
+    Student &student = *students->getByID(id);
+    int advisor = student.getAdvisor();
+    removeAdvisee(id, advisor);
+    students->removeByID(id);
 }
 
 void Interface::addFaculty() {
-    int id;
-    cout << "" << endl;
-    cin >> id;
+    int id = promptForFaculty(1);
 
     string name;
-    cout << "" << endl;
+    cout << "Please enter in the faculty name" << endl;
     cin >> name;
 
     string level;
-    cout << "" << endl;
+    cout << "Please enter in the faculty level" << endl;
     cin >> level;
 
     string dept;
-    cout << "" << endl;
+    cout << "Please enter in the department" << endl;
     cin >> dept;
 
     Faculty *newFaculty = new Faculty(id, name, level, dept);
@@ -192,16 +187,70 @@ void Interface::addFaculty() {
 }
 
 void Interface::deleteFaculty(int id) {
+    cout << "Which Advisor would you like to switch the current Advisor's students to?" << endl;
+    Faculty &newAdvisor = *faculty->getByID(promptForFaculty(0));
+    Faculty &oldAdvisor = *faculty->getByID(id);
 
+    DblList<int> *advisees = oldAdvisor.getAdvisees();
+    while (!advisees->isEmpty()) {
+        int studentID = advisees->removeBack();
+        changeAdvisor(studentID, newAdvisor.getid());
+    }
+    delete advisees;
+    faculty->removeByID(oldAdvisor.getid());
 }
 
 void Interface::changeAdvisor(int studentid, int facultyid) {
-
+    removeAdvisee(studentid, facultyid);
+    Faculty &advisor = *faculty->getByID(facultyid);
+    advisor.addStudent(studentid);
+    Student &student = *students->getByID(studentid);
+    student.changeAdvisor(facultyid);
 }
 
 void Interface::removeAdvisee(int studentid, int facultyid) {
-
+    Faculty &advisor = *faculty->getByID(facultyid);
+    advisor.removeStudent(studentid);
+    Student &student = *students->getByID(studentid);
+    student.changeAdvisor(-1);
 }
+
+int Interface::promptForStudent(int flag) {
+    int id;
+    cout << "Enter in the Student ID" << endl;
+    cin >> id;
+    if (flag == 0) {
+        while (!students->containsByID(id)) {
+            cout << "That Student ID does not exist. Enter in a valid ID." << endl;
+            cin >> id;
+        }
+    }
+    else if (flag == 1) {
+        while (students->containsByID(id)) {
+            cout << "That Student ID already exists. Enter in a valid ID." << endl;
+            cin >> id;
+        }
+    }
+    return id;
+}
+
+int Interface::promptForFaculty(int flag) {
+    int id;
+    cout << "Enter in the Faculty ID" << endl;
+    cin >> id;
+    if (flag == 0) {
+        while (!faculty->containsByID(id)) {
+            cout << "That Faculty ID does not exist. Enter in a valid ID." << endl;
+            cin >> id;
+        }
+    }
+    else if (flag == 1) {
+        while (faculty->containsByID(id)) {
+            cout << "That Faculty ID already exists. Enter in a valid ID." << endl;
+            cin >> id;
+        }
+    }
+    return id;}
 
 void Interface::writeToFile() {
 

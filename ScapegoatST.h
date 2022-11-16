@@ -7,31 +7,34 @@ template <typename T>
 class ScapegoatST
 {
 public:
-  ScapegoatST();
-  virtual ~ScapegoatST();
-  int getSize();
-  void insert(T d);
-  void remove(T d);
-  bool contains(T d);
-  void printTreeInOrder();
-  void printTreePostOrder();
-  T getMin();
-  T getMax();
-  T getMedian();
+    ScapegoatST();
+    virtual ~ScapegoatST();
+    int getSize();
+    void insert(T d);
+    void remove(T d);
+    bool contains(T d);
+    void printTreeInOrder();
+    void printTreePostOrder();
+    T getMin();
+    T getMax();
+    T getMedian();
+    T& getByID(int id);
+    bool containsByID(int id);
+	void removeByID(int id);
 
 private:
-  int m_del;
-  int m_depth;
-  int m_size;
-  TreeNode<T> *m_root;
-  T getMinHelper(TreeNode<T> *subTreeRoot);
-  T getMaxHelper(TreeNode<T> *subTreeRoot);
-  int insertHelper(TreeNode<T> *&subTreeRoot, TreeNode<T> *newNode);
-  bool containsHelper(TreeNode<T> *subTreeRoot, TreeNode<T> *newNode);
-  void printTreeInOrderHelper(TreeNode<T> *subTreeRoot);
-  void printTreePostOrderHelper(TreeNode<T> *subTreeRoot);
-  void findTarget(T key, TreeNode<T> *&target, TreeNode<T> *&parent);
-  TreeNode<T> *getSuccessor(TreeNode<T> *rightChild);
+	int m_del;
+	int m_depth;
+	int m_size;
+	TreeNode<T> *m_root;
+	T getMinHelper(TreeNode<T> *subTreeRoot);
+	T getMaxHelper(TreeNode<T> *subTreeRoot);
+	int insertHelper(TreeNode<T> *&subTreeRoot, TreeNode<T> *newNode);
+	bool containsHelper(TreeNode<T> *subTreeRoot, TreeNode<T> *newNode);
+	void printTreeInOrderHelper(TreeNode<T> *subTreeRoot);
+	void printTreePostOrderHelper(TreeNode<T> *subTreeRoot);
+	void findTarget(T key, TreeNode<T> *&target, TreeNode<T> *&parent);
+	TreeNode<T> *getSuccessor(TreeNode<T> *rightChild);
 };
 
 template <typename T>
@@ -323,6 +326,25 @@ void ScapegoatST<T>::remove(T d)
     // delete target;
   }
   --m_size;
+}
+
+// need to implement this
+template <typename T>
+T& ScapegoatST<T>::getByID(int id) {
+  if (m_root->getid() == id) return m_root;
+  // recursive call
+}
+
+template <typename T>
+bool ScapegoatST<T>::containsByID(int id) {
+  if (m_root->getid() == id) return true;
+  // recursive call
+}
+
+template <typename T>
+void ScapegoatST<T>::removeByID(int id) {
+	if (m_root->getID() == id) remove(m_root);
+	// recursive call
 }
 
 #endif

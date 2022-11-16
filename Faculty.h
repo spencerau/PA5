@@ -23,6 +23,7 @@ public:
     bool operator == (Faculty &rhs);
     bool operator > (Faculty &rhs);
     bool operator < (Faculty &rhs);
+    DblList<int>* getAdvisees();
     // need to implement changing the advisors for this faculty's students if this is deleted
 private:
     int id;

@@ -48,6 +48,10 @@ void Faculty::printInfo() {
     cout << endl;
 }
 
+DblList<int>* Faculty::getAdvisees() {
+    return students;
+}
+
 bool Faculty::operator == (Faculty &rhs) {
     return id == rhs.getid();
 }
