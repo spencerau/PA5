@@ -46,9 +46,11 @@ void Interface::run() {
     int facultyid;
     int studentid;
     int id;
+    string line;
     while (result != 11) {
         printOptions();
-        cin >> result;
+        getline(cin, line);
+        result = stoi(line);
         // flag: 0 = DNE, 1 = exists already
         switch (result) {
             case 1:
@@ -171,19 +173,21 @@ void Interface::addStudent() {
 
     string name;
     cout << "Enter in the Student Name" << endl;
-    cin >> name;
+    getline(cin, name);
 
     string level;
     cout << "Enter in the Class Level" << endl;
-    cin >> level;
+    getline(cin, level);
 
     string major;
     cout << "Enter in the Major" << endl;
-    cin >> major;
+    getline(cin, major);
 
     double gpa;
     cout << "Enter in the GPA" << endl;
-    cin >> gpa;
+    string line;
+    getline(cin, line);
+    gpa = stoi(line);
 
     int advisorid = promptForFaculty(0);
     // add student id to advisor's advisees field
@@ -206,15 +210,15 @@ void Interface::addFaculty() {
 
     string name;
     cout << "Please enter in the faculty name" << endl;
-    cin >> name;
+    getline(cin, name);
 
     string level;
     cout << "Please enter in the faculty level" << endl;
-    cin >> level;
+    getline(cin, level);
 
     string dept;
     cout << "Please enter in the department" << endl;
-    cin >> dept;
+    getline(cin, dept);
 
     Faculty *newFaculty = new Faculty(id, name, level, dept);
     faculty->insert(newFaculty);
@@ -251,18 +255,20 @@ void Interface::removeAdvisee(int studentid, int facultyid) {
 
 int Interface::promptForStudent(int flag) {
     int id;
+    string line;
     cout << "Enter in the Student ID" << endl;
-    cin >> id;
     if (flag == 0) {
         while (!students->containsByID(id)) {
             cout << "That Student ID does not exist. Enter in a valid ID." << endl;
-            cin >> id;
+            getline(cin, line);
+            id = stoi(line);    
         }
     }
     else if (flag == 1) {
         while (students->containsByID(id)) {
             cout << "That Student ID already exists. Enter in a valid ID." << endl;
-            cin >> id;
+            getline(cin, line);
+            id = stoi(line);  
         }
     }
     return id;
@@ -270,18 +276,22 @@ int Interface::promptForStudent(int flag) {
 
 int Interface::promptForFaculty(int flag) {
     int id;
+    string line;
     cout << "Enter in the Faculty ID" << endl;
-    cin >> id;
+    getline(cin, line);
+    id = stoi(line); 
     if (flag == 0) {
         while (!faculty->containsByID(id)) {
             cout << "That Faculty ID does not exist. Enter in a valid ID." << endl;
-            cin >> id;
+            getline(cin, line);
+            id = stoi(line); 
         }
     }
     else if (flag == 1) {
         while (faculty->containsByID(id)) {
             cout << "That Faculty ID already exists. Enter in a valid ID." << endl;
-            cin >> id;
+            getline(cin, line);
+            id = stoi(line); 
         }
     }
     return id;}

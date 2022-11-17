@@ -38,6 +38,7 @@ private:
 	void findTarget(T key, TreeNode<T> *&target, TreeNode<T> *&parent);
 	TreeNode<T> *getSuccessor(TreeNode<T> *rightChild);
 	void printToFileHelper(TreeNode<T> *subTreeRoot, ofstream &writer);
+	T getByIDHelper(int id, TreeNode<T> *subTreeRoot)
 };
 
 template <typename T>
@@ -65,9 +66,10 @@ int ScapegoatST<T>::getSize()
 template <typename T>
 void ScapegoatST<T>::insert(T d)
 {
-  TreeNode<T> *newNode = new TreeNode<T>(d);
-  insertHelper(m_root, newNode);
-  ++m_size;
+	TreeNode<T> *newNode = new TreeNode<T>(d);
+	insertHelper(m_root, newNode);
+	++m_size;
+	++m_del;
 }
 
 template <typename T>
@@ -352,18 +354,40 @@ void ScapegoatST<T>::printToFileHelper(TreeNode<T> *subTreeRoot, ofstream &write
 // need to implement these three
 template <typename T>
 T ScapegoatST<T>::getByID(int id) {
-  if (m_root->getData()->getid() == id) return m_root->getData();
-  // recursive call
+	return getByIDHelper(id, m_root);
+}
+
+template <typename T>
+T ScapegoatST<T>::getByIDHelper(int id, TreeNode<T> *subTreeRoot)
+{
+  if (subTreeRoot == NULL)
+  {
+    return NULL;
+  }
+  else if (subTreeRoot->getData()->getid() == id)
+  {
+    return subTreeRoot->getData();
+  }
+  else if (subTreeRoot->getData()->getid() < id)
+  {
+    return getByIDHelper(id, subTreeRoot->m_left);
+  }
+  else
+  {
+    return getByIDHelper(id, subTreeRoot->m_right);
+  }
 }
 
 template <typename T>
 bool ScapegoatST<T>::containsByID(int id) {
-  if (m_root->getData()->getid() == id) return true;
-  // recursive call
+	if (m_root == NULL) return false;
+	if (m_root->getData()->getid() == id) return true;
+	// recursive call
 }
 
 template <typename T>
 void ScapegoatST<T>::removeByID(int id) {
+	if (m_root == NULL) return;
 	if (m_root->getData()->getid() == id) remove(m_root->getData());
 	// recursive call
 }
