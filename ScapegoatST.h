@@ -352,7 +352,7 @@ void ScapegoatST<T>::printToFileHelper(TreeNode<T> *subTreeRoot, ofstream &write
 // need to implement these three
 template <typename T>
 T& ScapegoatST<T>::getByID(int id) {
-  if (m_root->getData()->getid() == id) return m_root;
+  if (m_root->getData()->getid() == id) return m_root->getData();
   // recursive call
 }
 
@@ -364,7 +364,7 @@ bool ScapegoatST<T>::containsByID(int id) {
 
 template <typename T>
 void ScapegoatST<T>::removeByID(int id) {
-	if (m_root->getData()->getid() == id) remove(m_root);
+	if (m_root->getData()->getid() == id) remove(m_root->getData());
 	// recursive call
 }
 
