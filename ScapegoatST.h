@@ -31,7 +31,7 @@ private:
 	TreeNode<T> *m_root;
 	T getMinHelper(TreeNode<T> *subTreeRoot);
 	T getMaxHelper(TreeNode<T> *subTreeRoot);
-	int insertHelper(TreeNode<T> *&subTreeRoot, TreeNode<T> *newNode);
+	void insertHelper(TreeNode<T> *&subTreeRoot, TreeNode<T> *newNode);
 	bool containsHelper(TreeNode<T> *subTreeRoot, TreeNode<T> *newNode);
 	void printTreeInOrderHelper(TreeNode<T> *subTreeRoot);
 	void printTreePostOrderHelper(TreeNode<T> *subTreeRoot);
@@ -39,6 +39,8 @@ private:
 	TreeNode<T> *getSuccessor(TreeNode<T> *rightChild);
 	void printToFileHelper(TreeNode<T> *subTreeRoot, ofstream &writer);
 	T getByIDHelper(int id, TreeNode<T> *subTreeRoot);
+	bool containsByIDHelper(TreeNode<T> *subTreeRoot, int id);
+
 };
 
 template <typename T>
@@ -73,7 +75,7 @@ void ScapegoatST<T>::insert(T d)
 }
 
 template <typename T>
-int ScapegoatST<T>::insertHelper(TreeNode<T> *&subTreeRoot, TreeNode<T> *newNode)
+void ScapegoatST<T>::insertHelper(TreeNode<T> *&subTreeRoot, TreeNode<T> *newNode)
 {
   if (m_root == NULL)
   {
@@ -389,9 +391,29 @@ T ScapegoatST<T>::getByIDHelper(int id, TreeNode<T> *subTreeRoot)
 
 template <typename T>
 bool ScapegoatST<T>::containsByID(int id) {
-	if (m_root == NULL) return false;
-	if (m_root->getData()->getid() == id) return true;
-	// recursive call
+	//if (m_root == NULL) return false;
+	return containsByIDHelper(m_root, id);
+}
+
+template <typename T>
+bool ScapegoatST<T>::containsByIDHelper(TreeNode<T> *subTreeRoot, int id)
+{
+  if (subTreeRoot == NULL)
+  {
+    return false;
+  }
+  else if (id == subTreeRoot->m_data->getid())
+  {
+    return true;
+  }
+  else if (id < subTreeRoot->m_data->getid())
+  {
+    return containsByIDHelper(subTreeRoot->m_left, id);
+  }
+  else
+  {
+    return containsByIDHelper(subTreeRoot->m_right, id);
+  }
 }
 
 template <typename T>

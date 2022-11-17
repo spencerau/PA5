@@ -43,7 +43,7 @@ void Faculty::printInfo() {
     cout << "Advisees: " << endl;
     // this prints out a list of the advisees only be ID
     for (int i = 0; i < students->getSize(); i++) {
-        cout << students->get(i);
+        cout << students->get(i) << endl;
     }
     cout << endl;
 }
@@ -56,7 +56,7 @@ void Faculty::printToFile(ofstream &writer) {
     writer << "Advisees: " << endl;
     // this prints out a list of the advisees only be ID
     for (int i = 0; i < students->getSize(); i++) {
-        writer << students->get(i);
+        writer << students->get(i) << endl;
     }
     writer << endl;
 }
