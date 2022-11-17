@@ -84,9 +84,10 @@ void Interface::run() {
             }
             case 3:
             {
-                if (!isEmpty(0)) {
+                if (!isEmpty(1)) {
                     cout << "Display Student:" << endl;
                     id = promptForStudent(0);
+                    cout << "PROMPT STUDENT WORKED" << endl;
                     printStudent(id);
                 }
                 break;
@@ -96,7 +97,6 @@ void Interface::run() {
                 if (!isEmpty(1)) {
                     cout << "Display Faculty" << endl;
                     id = promptForFaculty(0);
-                    cout << "Faculty ID: " << id << endl;
                     printFaculty(id);
                 }
                 break;
@@ -200,8 +200,6 @@ void Interface::printStudent(int id) {
 
 void Interface::printFaculty(int id) {
     Faculty *advisor = faculty->getByID(id);
-    cout << advisor->getid() << endl;
-    cout << "faculty->getByID() is working" << endl;
     advisor->printInfo();
     //delete advisor;
 }

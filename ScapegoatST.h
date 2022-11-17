@@ -26,7 +26,7 @@ public:
 
 private:
 	double m_del;
-  double m_depth;
+	double m_depth;
 	double m_size;
 	TreeNode<T> *m_root;
 	T getMinHelper(TreeNode<T> *subTreeRoot);
@@ -361,11 +361,11 @@ T ScapegoatST<T>::getByIDHelper(int id, TreeNode<T> *subTreeRoot)
   }
   else if (subTreeRoot->getData()->getid() < id)
   {
-    return getByIDHelper(id, subTreeRoot->m_left);
+    return getByIDHelper(id, subTreeRoot->m_right);
   }
   else
   {
-    return getByIDHelper(id, subTreeRoot->m_right);
+    return getByIDHelper(id, subTreeRoot->m_left);
   }
 }
 

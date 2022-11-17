@@ -38,13 +38,10 @@ bool Faculty::hasStudent(int id) {
 void Faculty::printInfo() {
     //cout << "test fuck" << endl;
     cout << "Name: " << name << endl;
-    cout << "name was printed correclty" << endl;
     cout << "ID: " << id << endl;
     cout << "Level: " << level << endl;
     cout << "Department: " << dept << endl;
-    //cout << "IT IS STUDENTS THATS FUCKING UP" << endl;
     cout << "Advisees: " << endl;
-    // this prints out a list of the advisees only be ID
     for (int i = 0; i < students->getSize(); i++) {
         cout << students->get(i) << endl;
     }
