@@ -84,10 +84,9 @@ void Interface::run() {
             }
             case 3:
             {
-                if (!isEmpty(1)) {
+                if (!isEmpty(0)) {
                     cout << "Display Student:" << endl;
                     id = promptForStudent(0);
-                    cout << "PROMPT STUDENT WORKED" << endl;
                     printStudent(id);
                 }
                 break;
@@ -129,6 +128,7 @@ void Interface::run() {
             }
             case 9: // Change a student’s advisor given the student id and the new faculty id.
             {
+                // not deleting student id from old advisor
                 if (!isEmpty(0)) {
                     studentid = promptForStudent(0);
                     if (!isEmpty(1)) {
@@ -296,6 +296,7 @@ int Interface::promptForStudent(int flag) {
     string line;
     cout << "Enter in the Student ID" << endl;
     getline(cin, line);
+    id = stoi(line); 
     if (flag == 0) {
         while (!students->containsByID(id)) {
             cout << "That Student ID does not exist. Enter in a valid ID." << endl;
