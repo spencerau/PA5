@@ -28,6 +28,7 @@ just printed to the file instead of the terminal).
 
 #include "Interface.h"
 #include <iostream>
+#include <string>
 
 using namespace std;
 
@@ -47,6 +48,24 @@ void Interface::run() {
     int studentid;
     int id;
     string line;
+
+    Faculty *linstead = new Faculty(000, "Linstead", "Assist Prof", "Code Monkey Dept");
+    faculty->insert(linstead);
+    Faculty *stevens = new Faculty(111, "Stevens", "Code Monkey", "Computer Science");
+    faculty->insert(stevens);
+
+    Student *student1 = new Student(12345, "Student1", "Freshman", "CS", 0.5, 000);
+    students->insert(student1);
+    linstead->addStudent(12345);
+
+    Student *student2 = new Student(678910, "Student2", "Senior", "Code Monkey", 0.6, 111);
+    students->insert(student2);
+    stevens->addStudent(678910);
+
+    Student *student3 = new Student(333, "Student3", "code monkey", "test major 12345", 1.1, 000);
+    students->insert(student3);
+    linstead->addStudent(333);
+
     while (result != 11) {
         printOptions();
         getline(cin, line);
@@ -65,27 +84,33 @@ void Interface::run() {
             }
             case 3:
             {
-                cout << "Display Student:" << endl;
-                id = promptForStudent(0);
-                printStudent(id);
+                if (!isEmpty(0)) {
+                    cout << "Display Student:" << endl;
+                    id = promptForStudent(0);
+                    printStudent(id);
+                }
                 break;
             }
             case 4:
             {
-                cout << "Display Faculty" << endl;
-                id = promptForFaculty(0);
-                printFaculty(id);
+                if (!isEmpty(1)) {
+                    cout << "Display Faculty" << endl;
+                    id = promptForFaculty(0);
+                    printFaculty(id);
+                }
                 break;
             }
             case 5:
             {
-                addStudent();
+                if (!isEmpty(1)) addStudent();
                 break;
             }
             case 6:
             {
-                id = promptForStudent(0);
-                deleteStudent(id);
+                if (!isEmpty(0)) {
+                    id = promptForStudent(0);
+                    deleteStudent(id);
+                }
                 break;
             }
             case 7:
@@ -93,29 +118,39 @@ void Interface::run() {
                 addFaculty();
                 break;
             }
-            case 8:
+            case 8: // Delete a faculty member given the id.
             {
-                id = promptForFaculty(0);
-                deleteFaculty(id);
+                if (!isEmpty(1)) {
+                    id = promptForFaculty(0);
+                    deleteFaculty(id);
+                }
                 break;
             }
-            case 9:
+            case 9: // Change a student’s advisor given the student id and the new faculty id.
             {
-                int studentid = promptForStudent(0);
-                int facultyid = promptForFaculty(0);
-                changeAdvisor(studentid, facultyid);
+                if (!isEmpty(0)) {
+                    studentid = promptForStudent(0);
+                    if (!isEmpty(1)) {
+                        facultyid = promptForFaculty(0);
+                        if (faculty->getSize() == 1) cout << "Error: There is only one advisor.\n" << endl;
+                        else changeAdvisor(studentid, facultyid);
+                    }
+                }
                 break;
             }
-            case 10:
+            case 10: // Remove an advisee from a faculty member given the ids
             {
-                studentid = promptForStudent(0);
-                facultyid = promptForFaculty(0);
-                removeAdvisee(studentid, facultyid);
+                if (!isEmpty(0)) {
+                    studentid = promptForStudent(0);
+                    if (!isEmpty(1)) {
+                        facultyid = promptForFaculty(0);
+                        removeAdvisee(studentid, facultyid);
+                    }
+                }
                 break;
             }
-            case 11:
+            case 11: // exit and print out to runLog.txt
             {
-                // print out to runLog.txt
                 writeToFile();
                 break;
             }
@@ -159,13 +194,13 @@ void Interface::printAllFaculty() {
 void Interface::printStudent(int id) {
     Student *student = students->getByID(id);
     student->printInfo();
-    delete student;
+    //delete student;
 }
 
 void Interface::printFaculty(int id) {
     Faculty *advisor = faculty->getByID(id);
     advisor->printInfo();
-    delete advisor;
+    //delete advisor;
 }
 
 void Interface::addStudent() {
@@ -187,13 +222,14 @@ void Interface::addStudent() {
     cout << "Enter in the GPA" << endl;
     string line;
     getline(cin, line);
-    gpa = stoi(line);
+    gpa = stod(line);
 
     int advisorid = promptForFaculty(0);
     // add student id to advisor's advisees field
     Faculty &advisor = *faculty->getByID(advisorid);
     advisor.addStudent(id);
 
+    cout << endl;
     Student *newStudent = new Student(id, name, level, major, gpa, advisorid);
     students->insert(newStudent);
 }
@@ -220,6 +256,7 @@ void Interface::addFaculty() {
     cout << "Please enter in the department" << endl;
     getline(cin, dept);
 
+    cout << endl;
     Faculty *newFaculty = new Faculty(id, name, level, dept);
     faculty->insert(newFaculty);
 }
@@ -257,9 +294,11 @@ int Interface::promptForStudent(int flag) {
     int id;
     string line;
     cout << "Enter in the Student ID" << endl;
+    getline(cin, line);
     if (flag == 0) {
         while (!students->containsByID(id)) {
             cout << "That Student ID does not exist. Enter in a valid ID." << endl;
+            string line;
             getline(cin, line);
             id = stoi(line);    
         }
@@ -267,6 +306,7 @@ int Interface::promptForStudent(int flag) {
     else if (flag == 1) {
         while (students->containsByID(id)) {
             cout << "That Student ID already exists. Enter in a valid ID." << endl;
+            string line;
             getline(cin, line);
             id = stoi(line);  
         }
@@ -283,6 +323,7 @@ int Interface::promptForFaculty(int flag) {
     if (flag == 0) {
         while (!faculty->containsByID(id)) {
             cout << "That Faculty ID does not exist. Enter in a valid ID." << endl;
+            string line;
             getline(cin, line);
             id = stoi(line); 
         }
@@ -290,6 +331,7 @@ int Interface::promptForFaculty(int flag) {
     else if (flag == 1) {
         while (faculty->containsByID(id)) {
             cout << "That Faculty ID already exists. Enter in a valid ID." << endl;
+            string line;
             getline(cin, line);
             id = stoi(line); 
         }
@@ -299,4 +341,21 @@ int Interface::promptForFaculty(int flag) {
 void Interface::writeToFile() {
     students->printToFile();
     faculty->printToFile();
+}
+
+bool Interface::isEmpty(int flag) {
+    if (flag == 0) {
+        if (students->getSize() == 0) {
+            cout << "There are currently no students. Operation aborted" << endl;
+            cout << endl;
+            return true;
+        } else return false;
+    }
+    if (flag == 1) {
+        if (faculty->getSize() == 0) {
+            cout << "There are currently no faculty. Operation aborted" << endl;
+            cout << endl;
+            return true;
+        } else return false;
+    }
 }
