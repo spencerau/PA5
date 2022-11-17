@@ -28,6 +28,7 @@ private:
 	int m_del;
 	int m_depth;
 	int m_size;
+  T getByIDHelper(int id, TreeNode<T> *subTreeRoot);
 	TreeNode<T> *m_root;
 	T getMinHelper(TreeNode<T> *subTreeRoot);
 	T getMaxHelper(TreeNode<T> *subTreeRoot);
