@@ -20,7 +20,7 @@ public:
     int getAdvisor();
     void changeAdvisor(int advisor);
     void printInfo();
-    void printToFile(ofstream writer);
+    void printToFile(ofstream &writer);
     // the overloading might be wrong
     bool operator == (Student &rhs);
     bool operator > (Student &rhs);

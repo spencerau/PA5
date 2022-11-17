@@ -37,7 +37,7 @@ private:
 	void printTreePostOrderHelper(TreeNode<T> *subTreeRoot);
 	void findTarget(T key, TreeNode<T> *&target, TreeNode<T> *&parent);
 	TreeNode<T> *getSuccessor(TreeNode<T> *rightChild);
-	void printToFileHelper(TreeNode<T> *subTreeRoot, ofstream writer);
+	void printToFileHelper(TreeNode<T> *subTreeRoot, ofstream &writer);
 };
 
 template <typename T>
@@ -340,7 +340,7 @@ void ScapegoatST<T>::printToFile() {
 }
 
 template <typename T>
-void ScapegoatST<T>::printToFileHelper(TreeNode<T> *subTreeRoot, ofstream writer) {
+void ScapegoatST<T>::printToFileHelper(TreeNode<T> *subTreeRoot, ofstream &writer) {
 	if (subTreeRoot != NULL) {
     printToFileHelper(subTreeRoot->m_left, writer);
     //cout << subTreeRoot->m_data << endl;

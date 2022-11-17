@@ -48,7 +48,7 @@ void Faculty::printInfo() {
     cout << endl;
 }
 
-void Faculty::printToFile(ofstream writer) {
+void Faculty::printToFile(ofstream &writer) {
     writer << "Name: " << name << endl;
     writer << "ID: " << id << endl;
     writer << "Level: " << level << endl;

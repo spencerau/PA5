@@ -21,7 +21,7 @@ public:
     void removeStudent(int id);
     bool hasStudent(int id);
     void printInfo();
-    void printToFile(ofstream writer);
+    void printToFile(ofstream &writer);
     bool operator == (Faculty &rhs);
     bool operator > (Faculty &rhs);
     bool operator < (Faculty &rhs);
