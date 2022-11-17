@@ -28,7 +28,6 @@ private:
 	int m_del;
 	int m_depth;
 	int m_size;
-  T getByIDHelper(int id, TreeNode<T> *subTreeRoot);
 	TreeNode<T> *m_root;
 	T getMinHelper(TreeNode<T> *subTreeRoot);
 	T getMaxHelper(TreeNode<T> *subTreeRoot);
@@ -39,7 +38,7 @@ private:
 	void findTarget(T key, TreeNode<T> *&target, TreeNode<T> *&parent);
 	TreeNode<T> *getSuccessor(TreeNode<T> *rightChild);
 	void printToFileHelper(TreeNode<T> *subTreeRoot, ofstream &writer);
-	T getByIDHelper(int id, TreeNode<T> *subTreeRoot)
+	T getByIDHelper(int id, TreeNode<T> *subTreeRoot);
 };
 
 template <typename T>
