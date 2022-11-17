@@ -28,6 +28,7 @@ private:
 	int m_del;
 	int m_depth;
 	int m_size;
+  T getByIDHelper(int id, TreeNode<T> *subTreeRoot);
 	TreeNode<T> *m_root;
 	T getMinHelper(TreeNode<T> *subTreeRoot);
 	T getMaxHelper(TreeNode<T> *subTreeRoot);
@@ -68,6 +69,7 @@ void ScapegoatST<T>::insert(T d)
   TreeNode<T> *newNode = new TreeNode<T>(d);
   insertHelper(m_root, newNode);
   ++m_size;
+  ++m_del;
 }
 
 template <typename T>
@@ -352,8 +354,28 @@ void ScapegoatST<T>::printToFileHelper(TreeNode<T> *subTreeRoot, ofstream &write
 // need to implement these three
 template <typename T>
 T ScapegoatST<T>::getByID(int id) {
-  if (m_root->getData()->getid() == id) return m_root->getData();
-  // recursive call
+  getByIDHelper(id, m_root);
+}
+
+template <typename T>
+T ScapegoatST<T>::getByIDHelper(int id, TreeNode<T> *subTreeRoot)
+{
+  if (subTreeRoot == NULL)
+  {
+    return NULL;
+  }
+  else if (subTreeRoot->getData()->getid() == id)
+  {
+    return subTreeRoot->getData();
+  }
+  else if (subTreeRoot->getData()->getid() < id)
+  {
+    getByIDHelper(id, subTreeRoot->m_left);
+  }
+  else
+  {
+    getByIDHelper(id, subTreeRoot->m_right);
+  }
 }
 
 template <typename T>
