@@ -134,7 +134,7 @@ void ScapegoatST<T>::printTreeInOrderHelper(TreeNode<T> *subTreeRoot)
   {
     printTreeInOrderHelper(subTreeRoot->m_left);
     //cout << subTreeRoot->m_data << endl;
-	subTreeRoot->printInfo();
+	subTreeRoot->getData()->printInfo();
     printTreeInOrderHelper(subTreeRoot->m_right);
   }
 }
@@ -344,7 +344,7 @@ void ScapegoatST<T>::printToFileHelper(TreeNode<T> *subTreeRoot, ofstream writer
 	if (subTreeRoot != NULL) {
     printToFileHelper(subTreeRoot->m_left, writer);
     //cout << subTreeRoot->m_data << endl;
-	subTreeRoot->printToFile(writer);
+	subTreeRoot->getData()->printToFile(writer);
     printToFileHelper(subTreeRoot->m_right, writer);
 	}
 }
@@ -352,19 +352,19 @@ void ScapegoatST<T>::printToFileHelper(TreeNode<T> *subTreeRoot, ofstream writer
 // need to implement these three
 template <typename T>
 T& ScapegoatST<T>::getByID(int id) {
-  if (m_root->getid() == id) return m_root;
+  if (m_root->getData()->getid() == id) return m_root;
   // recursive call
 }
 
 template <typename T>
 bool ScapegoatST<T>::containsByID(int id) {
-  if (m_root->getid() == id) return true;
+  if (m_root->getData()->getid() == id) return true;
   // recursive call
 }
 
 template <typename T>
 void ScapegoatST<T>::removeByID(int id) {
-	if (m_root->getID() == id) remove(m_root);
+	if (m_root->getData()->getid() == id) remove(m_root);
 	// recursive call
 }
 

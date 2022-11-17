@@ -16,13 +16,14 @@ When a command is selected, you should prompt the user for the required data, an
 the user describing what the error is and abort the command.
 
 All of the above commands should enforce referential integrity. That is to say, a student can not have an advisor that is not in the faculty table. 
-A faculty member can’t have an advisee not in the student table. If a faculty member is deleted, then their advisees must have their advisors changed, 
-etc. Your commands will be responsible for maintaining referential integrity. If a user issues a command that would break referential integrity, 
-you should warn them and abort the command, or execute the command and fix any violations as appropriate.
+A faculty member can’t have an advisee not in the student table. If a faculty member is deleted, then their advisees must have their advisors 
+changed, etc. Your commands will be responsible for maintaining referential integrity. If a user issues a command that would break referential 
+integrity, you should warn them and abort the command, or execute the command and fix any violations as appropriate.
  
 After each command is executed, the menu should be displayed again, and the user allowed to continue.
 If the user selects the Exit option, prior to quitting your program should create a file, named runLog.txt, which contains the information of both 
-tables at the time the program was terminated. (This is the information from option 1 and option 2, just printed to the file instead of the terminal).
+tables at the time the program was terminated. (This is the information from option 1 and option 2, 
+just printed to the file instead of the terminal).
 */
 
 #ifndef INTERFACE_H
