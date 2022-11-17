@@ -52,52 +52,76 @@ void Interface::run() {
         // flag: 0 = DNE, 1 = exists already
         switch (result) {
             case 1:
+            {
                 printAllStudents();
                 break;
+            }
             case 2:
+            {
                 printAllFaculty();
                 break;
+            }
             case 3:
+            {
                 cout << "Display Student:" << endl;
                 id = promptForStudent(0);
                 printStudent(id);
                 break;
+            }
             case 4:
+            {
                 cout << "Display Faculty" << endl;
                 id = promptForFaculty(0);
                 printFaculty(id);
                 break;
+            }
             case 5:
+            {
                 addStudent();
                 break;
+            }
             case 6:
+            {
                 id = promptForStudent(0);
                 deleteStudent(id);
                 break;
+            }
             case 7:
+            {
                 addFaculty();
                 break;
+            }
             case 8:
+            {
                 id = promptForFaculty(0);
                 deleteFaculty(id);
                 break;
+            }
             case 9:
+            {
                 int studentid = promptForStudent(0);
                 int facultyid = promptForFaculty(0);
                 changeAdvisor(studentid, facultyid);
                 break;
+            }
             case 10:
+            {
                 studentid = promptForStudent(0);
                 facultyid = promptForFaculty(0);
                 removeAdvisee(studentid, facultyid);
                 break;
+            }
             case 11:
+            {
                 // print out to runLog.txt
                 writeToFile();
                 break;
+            }
             default:
+            {
                 cout << "That option is not valid. Please choose an option between 1 and 11." << endl;
                 break;
+            }
         }
     }
 
