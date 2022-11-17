@@ -20,7 +20,7 @@ public:
     T getMax();
     T getMedian();
 	void printToFile();
-    T& getByID(int id);
+    T getByID(int id);
     bool containsByID(int id);
 	void removeByID(int id);
 
@@ -351,7 +351,7 @@ void ScapegoatST<T>::printToFileHelper(TreeNode<T> *subTreeRoot, ofstream &write
 
 // need to implement these three
 template <typename T>
-T& ScapegoatST<T>::getByID(int id) {
+T ScapegoatST<T>::getByID(int id) {
   if (m_root->getData()->getid() == id) return m_root->getData();
   // recursive call
 }

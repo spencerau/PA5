@@ -222,29 +222,29 @@ void Interface::addFaculty() {
 
 void Interface::deleteFaculty(int id) {
     cout << "Which Advisor would you like to switch the current Advisor's students to?" << endl;
-    Faculty &newAdvisor = *faculty->getByID(promptForFaculty(0));
-    Faculty &oldAdvisor = *faculty->getByID(id);
+    Faculty *newAdvisor = faculty->getByID(promptForFaculty(0));
+    Faculty *oldAdvisor = faculty->getByID(id);
 
-    DblList<int> *advisees = oldAdvisor.getAdvisees();
+    DblList<int> *advisees = oldAdvisor->getAdvisees();
     while (!advisees->isEmpty()) {
         int studentID = advisees->removeBack();
-        changeAdvisor(studentID, newAdvisor.getid());
+        changeAdvisor(studentID, newAdvisor->getid());
     }
     delete advisees;
-    faculty->removeByID(oldAdvisor.getid());
+    faculty->removeByID(oldAdvisor->getid());
 }
 
 void Interface::changeAdvisor(int studentid, int facultyid) {
     removeAdvisee(studentid, facultyid);
-    Faculty &advisor = *faculty->getByID(facultyid);
-    advisor.addStudent(studentid);
-    Student &student = *students->getByID(studentid);
-    student.changeAdvisor(facultyid);
+    Faculty *advisor = faculty->getByID(facultyid);
+    advisor->addStudent(studentid);
+    Student *student = students->getByID(studentid);
+    student->changeAdvisor(facultyid);
 }
 
 void Interface::removeAdvisee(int studentid, int facultyid) {
-    Faculty &advisor = *faculty->getByID(facultyid);
-    advisor.removeStudent(studentid);
+    Faculty *advisor = faculty->getByID(facultyid);
+    advisor->removeStudent(studentid);
     Student &student = *students->getByID(studentid);
     student.changeAdvisor(-1);
 }
