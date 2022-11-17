@@ -60,6 +60,7 @@ private:
     int promptForStudent(int flag);
     int promptForFaculty(int flag);
     void writeToFile();
+    bool isEmpty(int flag);
 };
 
 
