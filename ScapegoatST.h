@@ -31,7 +31,7 @@ private:
 	TreeNode<T> *m_root;
 	T getMinHelper(TreeNode<T> *subTreeRoot);
 	T getMaxHelper(TreeNode<T> *subTreeRoot);
-	int insertHelper(TreeNode<T> *&subTreeRoot, TreeNode<T> *newNode);
+	void insertHelper(TreeNode<T> *&subTreeRoot, TreeNode<T> *newNode);
 	bool containsHelper(TreeNode<T> *subTreeRoot, TreeNode<T> *newNode);
 	void printTreeInOrderHelper(TreeNode<T> *subTreeRoot);
 	void printTreePostOrderHelper(TreeNode<T> *subTreeRoot);
@@ -57,6 +57,14 @@ ScapegoatST<T>::~ScapegoatST()
   }
 }
 
+// template <typename T>
+// int ScapegoatST<T>::getSize(TreeNode<T>* subtreeRoot){
+//   if (subtreeRoot == NULL){ 
+//     return 0;
+//   } 
+//   return 1 + getSize(subtreeRoot->m_left) + getSize(subtreeRoot->m_right); 
+// }
+
 template <typename T>
 int ScapegoatST<T>::getSize()
 {
@@ -66,37 +74,38 @@ int ScapegoatST<T>::getSize()
 template <typename T>
 void ScapegoatST<T>::insert(T d)
 {
+  m_depth = 0;
 	TreeNode<T> *newNode = new TreeNode<T>(d);
 	insertHelper(m_root, newNode);
 	++m_size;
 	++m_del;
+  // TreeNode<T> *scapeGoat = new TreeNode<T>;
+  if (m_depth > log2(m_del)/log2(1.5))
+  {
+    // rebuild
+  }
 }
 
 template <typename T>
-int ScapegoatST<T>::insertHelper(TreeNode<T> *&subTreeRoot, TreeNode<T> *newNode)
+void ScapegoatST<T>::insertHelper(TreeNode<T> *&subTreeRoot, TreeNode<T> *newNode)
 {
-  if (m_root == NULL)
-  {
-    m_root = newNode;
-  }
-  else if (subTreeRoot == NULL)
+  if (subTreeRoot == NULL)
   {
     subTreeRoot = newNode;
   }
   else if (newNode->m_data < subTreeRoot->m_data)
   {
     m_depth++;
+    newNode->parent = subTreeRoot;
     insertHelper(subTreeRoot->m_left, newNode);
   }
   else
   {
+    newNode->parent = subTreeRoot;
     m_depth++;
     insertHelper(subTreeRoot->m_right, newNode);
   }
-  if (m_depth > log2(m_del)/log2(1.5))
-  {
-    // rebuild
-  }
+
 }
 
 template <typename T>
@@ -162,36 +171,7 @@ void ScapegoatST<T>::printTreePostOrderHelper(TreeNode<T> *subTreeRoot)
   }
 }
 
-/*
-template <typename T>
-bool ScapegoatST::iterativeContains(T d){
-  if(m_root == NULL){
-    return false;
-  }
-  if(m_root->m_data ==  d){
-    return true;
-  }
-  bool found = false;
-  TreeNode<T>* currRoot = m_root;
-  while(!found){
-    if(d < currRoot->m_data){
-      currRoot = currRoot->m_left;
-    } else{
-      currRoot = currRoot->m_right;
-    }
-    if(currRoot == NULL){
-      found = false;
-      break;
-    }
-    if(currRoot->m_data == d){
-      found = true;
-      break;
-    }
 
-  }
-  return found;
-}
-*/
 
 template <typename T>
 T ScapegoatST<T>::getMin()

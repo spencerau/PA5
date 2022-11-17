@@ -13,10 +13,12 @@ public:
   T getData();
 
   template <typename S>
-  friend class BST;
+  friend class ScapegoatST;
+private:
   T m_data;
   TreeNode<T>* m_left;
   TreeNode<T>* m_right;
+  TreeNode<T>* parent;
 
 };
 
@@ -25,6 +27,7 @@ TreeNode<T>::TreeNode(T d){
   m_data = d;
   m_left = NULL;
   m_right = NULL;
+  parent = NULL;
 }
 
 template <typename T>
