@@ -3,7 +3,7 @@
 
 #include "TreeNode.h"
 #include <fstream>
-
+#include <cmath>
 template <typename T>
 class ScapegoatST
 {
@@ -25,9 +25,9 @@ public:
 	void removeByID(int id);
 
 private:
-	int m_del;
-	int m_depth;
-	int m_size;
+	double m_del;
+  double m_depth;
+	double m_size;
 	TreeNode<T> *m_root;
 	T getMinHelper(TreeNode<T> *subTreeRoot);
 	T getMaxHelper(TreeNode<T> *subTreeRoot);
@@ -92,6 +92,10 @@ int ScapegoatST<T>::insertHelper(TreeNode<T> *&subTreeRoot, TreeNode<T> *newNode
   {
     m_depth++;
     insertHelper(subTreeRoot->m_right, newNode);
+  }
+  if (m_depth > log2(m_del)/log2(1.5))
+  {
+    // rebuild
   }
 }
 
@@ -329,7 +333,12 @@ void ScapegoatST<T>::remove(T d)
         parent->m_right = child;
       }
     }
-    // delete target;
+    delete target;
+    delete target;
+    if (m_del > 2 * m_size)
+    {
+      // rebuild
+    }
   }
   --m_size;
 }
