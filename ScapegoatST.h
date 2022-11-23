@@ -40,6 +40,7 @@ private:
 	void printToFileHelper(TreeNode<T> *subTreeRoot, ofstream &writer);
 	T getByIDHelper(int id, TreeNode<T> *subTreeRoot);
 	bool containsByIDHelper(TreeNode<T> *subTreeRoot, int id);
+	void findTargetByID(int id, TreeNode<T> *&target, TreeNode<T> *&parent);
 
 };
 
@@ -402,6 +403,95 @@ void ScapegoatST<T>::removeByID(int id) {
 	if (m_root == NULL) return;
 	if (m_root->getData()->getid() == id) remove(m_root->getData());
 	// recursive call
+
+	// check if empty
+	TreeNode<T> *target = NULL;
+	TreeNode<T> *parent = NULL;
+	target = m_root;
+	findTargetByID(id, target, parent);
+	if (target == NULL)
+	{ // value wasn't in tree, othing to do
+		return;
+	}
+	// check if leaf (including the root)
+	if (target->m_left == NULL && target->m_right == NULL)
+	{ // no children, it's a leaf
+		if (target == m_root)
+		{ // leaf is the root of tree
+		m_root = NULL;
+		}
+		else
+		{ // it's not the root
+		if (target == parent->m_left)
+		{
+			parent->m_left = NULL;
+		}
+		else
+		{
+			parent->m_right = NULL;
+		}
+		}
+		// delete target; //free the memory
+	}
+	else if (target->m_left != NULL && target->m_right != NULL)
+	{ // 2 child case
+		TreeNode<T> *suc = getSuccessor(target->m_right);
+		T value = suc->m_data;
+		remove(value); // remove successor treenode
+		target->m_data = value;
+	}
+	else
+	{ // 1 child
+		TreeNode<T> *child;
+		if (target->m_left != NULL)
+		{
+		child = target->m_left;
+		}
+		else
+		{
+		child = target->m_right;
+		}
+		if (target == m_root)
+		{
+		m_root = child;
+		}
+		else
+		{
+		if (target == parent->m_left)
+		{
+			// cout << "I'm here!" << endl;
+			parent->m_left = child;
+		}
+		else
+		{
+			parent->m_right = child;
+		}
+		}
+		delete target;
+		delete target;
+		if (m_del > 2 * m_size)
+		{
+		// rebuild
+		}
+	}
+	--m_size;
+}
+
+template <typename T>
+void ScapegoatST<T>::findTargetByID(int id, TreeNode<T> *&target, TreeNode<T> *&parent)
+{
+  while (target != NULL && target->m_data->getid() != id)
+  {
+    parent = target;
+    if (id < target->m_data->getid())
+    {
+      target = target->m_left;
+    }
+    else
+    {
+      target = target->m_right;
+    }
+  }
 }
 
 #endif

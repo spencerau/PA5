@@ -1,6 +1,6 @@
 Name: Linstead
 ID: 0
-Level: Assist Prof
+Level: Javascript Senpai
 Department: Code Monkey Dept
 Advisees: 
 12345

@@ -49,7 +49,7 @@ void Interface::run() {
     int id;
     string line;
 
-    Faculty *linstead = new Faculty(000, "Linstead", "Assist Prof", "Code Monkey Dept");
+    Faculty *linstead = new Faculty(000, "Linstead", "Javascript Senpai", "Code Monkey Dept");
     faculty->insert(linstead);
     Faculty *stevens = new Faculty(111, "Stevens", "Code Monkey", "Computer Science");
     faculty->insert(stevens);
