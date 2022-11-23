@@ -24,6 +24,7 @@ Student::~Student() {
 }
 
 int Student::getid() {
+    //std::cout << "getid called, returning: " << id << "\n";
     return id;
 }
 

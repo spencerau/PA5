@@ -76,7 +76,7 @@ int ScapegoatST<T>::getSize()
 template <typename T>
 void ScapegoatST<T>::insert(T d)
 {
-  m_depth = 0;
+	m_depth = 0;
 	TreeNode<T> *newNode = new TreeNode<T>(d);
 	insertHelper(m_root, newNode);
 	++m_size;
@@ -95,7 +95,8 @@ void ScapegoatST<T>::insertHelper(TreeNode<T> *&subTreeRoot, TreeNode<T> *newNod
   {
     subTreeRoot = newNode;
   }
-  else if (newNode->m_data < subTreeRoot->m_data)
+  // this is comparing the pointers
+  else if (newNode->m_data->getid() < subTreeRoot->m_data->getid())
   {
     m_depth++;
     newNode->parent = subTreeRoot;

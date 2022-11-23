@@ -66,6 +66,8 @@ void Interface::run() {
     students->insert(student3);
     linstead->addStudent(333);
 
+    //std::cout << "student3's id: " << student3->getid();
+
     while (result != 11) {
         printOptions();
         getline(cin, line);
@@ -87,6 +89,7 @@ void Interface::run() {
                 if (!isEmpty(0)) {
                     cout << "Display Student:" << endl;
                     id = promptForStudent(0);
+                    cout << "promoptForStudent() is working" << endl;
                     printStudent(id);
                 }
                 break;
