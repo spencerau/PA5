@@ -42,13 +42,7 @@ Interface::~Interface() {
     delete faculty;
 }
 
-void Interface::run() {
-    int result = -1;
-    int facultyid;
-    int studentid;
-    int id;
-    string line;
-
+void Interface::testPeople() {
     Faculty *linstead = new Faculty(000, "Linstead", "Javascript Senpai", "Code Monkey Dept");
     faculty->insert(linstead);
     Faculty *stevens = new Faculty(111, "Stevens", "Code Monkey", "Computer Science");
@@ -65,8 +59,17 @@ void Interface::run() {
     Student *student3 = new Student(333, "Student3", "code monkey", "test major 12345", 1.1, 000);
     students->insert(student3);
     linstead->addStudent(333);
+}
 
-    //std::cout << "student3's id: " << student3->getid();
+
+void Interface::run() {
+    int result = -1;
+    int facultyid;
+    int studentid;
+    int id;
+    string line;
+
+    testPeople();
 
     while (result != 11) {
         printOptions();
@@ -184,11 +187,6 @@ void Interface::printOptions() {
 
 void Interface::printAllStudents() {
     students->printTreeInOrder();
-    /*
-    for (int i = 0; i < students->getSize(); i++) {
-        students.
-    }
-    */
 }
 
 void Interface::printAllFaculty() {
@@ -275,23 +273,23 @@ void Interface::deleteFaculty(int id) {
         int studentID = advisees->removeBack();
         changeAdvisor(studentID, newAdvisor->getid());
     }
-    delete advisees;
+    //delete advisees;
     faculty->removeByID(oldAdvisor->getid());
 }
 
 void Interface::changeAdvisor(int studentid, int facultyid) {
-    removeAdvisee(studentid, facultyid);
+    Student *student = students->getByID(studentid);
+    removeAdvisee(studentid, student->getAdvisor());
     Faculty *advisor = faculty->getByID(facultyid);
     advisor->addStudent(studentid);
-    Student *student = students->getByID(studentid);
     student->changeAdvisor(facultyid);
 }
 
 void Interface::removeAdvisee(int studentid, int facultyid) {
     Faculty *advisor = faculty->getByID(facultyid);
     advisor->removeStudent(studentid);
-    Student &student = *students->getByID(studentid);
-    student.changeAdvisor(-1);
+    Student *student = students->getByID(studentid);
+    student->changeAdvisor(-1);
 }
 
 int Interface::promptForStudent(int flag) {
@@ -344,8 +342,10 @@ int Interface::promptForFaculty(int flag) {
     return id;}
 
 void Interface::writeToFile() {
-    students->printToFile();
-    faculty->printToFile();
+    ofstream writer("runLog.txt");
+    students->printToFile(writer);
+    faculty->printToFile(writer);
+    writer.close();
 }
 
 bool Interface::isEmpty(int flag) {
@@ -363,4 +363,36 @@ bool Interface::isEmpty(int flag) {
             return true;
         } else return false;
     }
+}
+
+void Interface::test8() {
+    testPeople();
+    deleteFaculty(111);
+    printAllFaculty();
+    printAllStudents();
+}
+
+void Interface::test9() {
+    testPeople();
+    cout << "BEFORE" << endl;
+    printStudent(12345);
+    cout << "Old Advisor: " << endl;
+    printFaculty(0);
+    cout << "New Advisor: " << endl;
+    printFaculty(111);
+
+    changeAdvisor(12345, 111);
+
+    cout << "----------------------------" << endl;
+    cout << "AFTER" << endl;
+    printStudent(12345);
+    cout << "Old Advisor: " << endl;
+    printFaculty(0);
+    cout << "New Advisor: " << endl;
+    printFaculty(111);
+}
+
+void Interface::test11() {
+    testPeople();
+    writeToFile();
 }

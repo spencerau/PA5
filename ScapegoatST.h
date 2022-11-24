@@ -19,7 +19,7 @@ public:
     T getMin();
     T getMax();
     T getMedian();
-	void printToFile();
+	void printToFile(ofstream &writer);
     T getByID(int id);
     bool containsByID(int id);
 	void removeByID(int id);
@@ -328,10 +328,8 @@ void ScapegoatST<T>::remove(T d)
 }
 
 template <typename T>
-void ScapegoatST<T>::printToFile() {
-	ofstream writer("runLog.txt");
+void ScapegoatST<T>::printToFile(ofstream &writer) {
 	printToFileHelper(m_root, writer);
-	writer.close();
 }
 
 template <typename T>

@@ -1,3 +1,24 @@
+Student Name: Student3
+Student ID: 333
+Level: code monkey
+Major: test major 12345
+GPA: 1.1
+Advisor: 0
+
+Student Name: Student1
+Student ID: 12345
+Level: Freshman
+Major: CS
+GPA: 0.5
+Advisor: 0
+
+Student Name: Student2
+Student ID: 678910
+Level: Senior
+Major: Code Monkey
+GPA: 0.6
+Advisor: 111
+
 Name: Linstead
 ID: 0
 Level: Javascript Senpai

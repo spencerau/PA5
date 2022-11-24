@@ -41,6 +41,9 @@ public:
     Interface();
     ~Interface();
     void run();
+    void test8();
+    void test9();
+    void test11();
     
 private:
     ScapegoatST<Student*> *students;
@@ -61,6 +64,8 @@ private:
     int promptForFaculty(int flag);
     void writeToFile();
     bool isEmpty(int flag);
+
+    void testPeople();
 };
 
 

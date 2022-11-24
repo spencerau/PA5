@@ -27,6 +27,7 @@ void Faculty::addStudent(int id) {
 void Faculty::removeStudent(int id) {
     for (int i = 0; i < students->getSize(); i++) {
         if (students->get(i) == id) students->remove(i);
+        else cout << "Advisee " << i << ": " << students->get(i) << endl;
     }
 }
 
