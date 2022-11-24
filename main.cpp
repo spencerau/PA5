@@ -5,7 +5,7 @@ using namespace std;
 
 int main() {
     Interface *interface = new Interface();
-    //interface->run();
-    interface->test11();
+    interface->run();
+    //interface->test11();
     delete interface;
 }
