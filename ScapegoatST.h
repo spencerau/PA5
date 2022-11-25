@@ -23,7 +23,7 @@ public:
   void printToFile(ofstream &writer);
   T getByID(int id);
   TreeNode<T> *getScapeGoat(TreeNode<T> *newNode);
-  void rebuildSubTree(TreeNode<T> *rebuildNode);
+  void rebuildSubTree(TreeNode<T> *subTreeRoot);
   int buildArray(TreeNode<T> *node, TreeNode<T> *arr[], int i);
   TreeNode<T> *buildBalancedArray(TreeNode<T> **arr, int i, int n);
   bool containsByID(int id);
@@ -87,18 +87,6 @@ void ScapegoatST<T>::insert(T d)
   insertHelper(m_root, newNode);
   ++m_size;
   ++m_del;
-  if (m_depth > log2(m_size) / log2(1.5))
-  {
-    TreeNode<T> *scapeGoat = getScapeGoat(m_root);
-    if (scapeGoat->parent != NULL)
-    {
-      rebuildSubTree(scapeGoat->parent);
-    }
-    else
-    {
-      rebuildSubTree(scapeGoat);
-    }
-  }
   m_depth = 0;
 }
 
@@ -110,6 +98,7 @@ void ScapegoatST<T>::insertHelper(TreeNode<T> *&subTreeRoot, TreeNode<T> *newNod
     subTreeRoot = newNode;
     if (m_depth > log2(m_size) / log2(1.5))
     { // checking if the node inserted is too deep
+    cout << log2(m_size) / log2(1.5) << endl;
       TreeNode<T> *scapeGoat = getScapeGoat(newNode);
       if (scapeGoat->parent != NULL)
       {
@@ -531,20 +520,20 @@ TreeNode<T> *ScapegoatST<T>::getScapeGoat(TreeNode<T> *newNode)
   }
   return newNode;
 }
-
+//method to rebuild a subtree using buildarray and buildbalanced array
 template <typename T>
-void ScapegoatST<T>::rebuildSubTree(TreeNode<T> *rebuildNode)
+void ScapegoatST<T>::rebuildSubTree(TreeNode<T> *subTreeRoot)
 {
-  TreeNode<T> *parentNode = rebuildNode->parent;
-  int size = getSize(rebuildNode);
+  TreeNode<T> *parentNode = subTreeRoot->parent;
+  int size = getSize(subTreeRoot);
   TreeNode<T> **tempArr= new TreeNode<T> *[size];
-  buildArray(rebuildNode, tempArr, 0);
+  buildArray(subTreeRoot, tempArr, 0);
   if (parentNode == NULL)
   {
     m_root = buildBalancedArray(tempArr, 0, size);
     m_root->parent = NULL;
   }
-  else if (parentNode->m_right == rebuildNode)
+  else if (parentNode->m_right == subTreeRoot)
   {
     parentNode->m_right = buildBalancedArray(tempArr, 0, size);
     parentNode->m_right->parent = parentNode;
@@ -555,7 +544,7 @@ void ScapegoatST<T>::rebuildSubTree(TreeNode<T> *rebuildNode)
     parentNode->m_left->parent = parentNode;
   }
 }
-
+//method to build array from inorder traversal of tree
 template <typename T>
 int ScapegoatST<T>::buildArray(TreeNode<T> *node, TreeNode<T> *arr[], int i)
 {
@@ -572,7 +561,7 @@ int ScapegoatST<T>::buildArray(TreeNode<T> *node, TreeNode<T> *arr[], int i)
     return buildArray(node->m_right, arr, i);
   }
 }
-
+//method to build balanced array representation of an array from an array
 template <typename T>
 TreeNode<T> *ScapegoatST<T>::buildBalancedArray(TreeNode<T> **arr, int i, int j)
 {
