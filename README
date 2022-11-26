@@ -1,0 +1,24 @@
+Ben Fellows 
+
+002369768
+
+bfellow@chapman.edu
+
+CPSC-350-02
+
+PA5
+
+Student.cpp
+Faculty.cpp
+main.cpp
+ScapegoatST.h
+Interface.cpp
+TreeNode.h
+DublList.h
+
+I referrenced the in class BST code.
+I refferenced the in class TreeNode code.
+I refferenced the provided lecture covering scapegoat trees.
+I refferenced all previous CPSC_350 projects.
+
+To run the program, navigate to the folder containing the source files, and run g++ *.cpp and then run ./a.out
