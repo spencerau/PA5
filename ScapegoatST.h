@@ -1,55 +1,9 @@
-/*
-Spencer Au
-ID: 002385256
-spau@chapman.edu
-
-Partner:
-Ben Fellows
-bfellows@chapman.edu
-
-CPSC 350 - Section 2
-PA5
-
-ScapegoatST() - constructor that intializes the root to null and sets del, depth, and size to 0
-
-virtual ~ScapegoatST() - deletes the root
-
-int getSize(TreeNode<T> *subTreeRoot) - takes a subroot and returns the size of the corresponding subtree
-
-int getSize() - returns size
-
-void insert(T d) - takes a T d and inserts that node into the tree
-
-void remove(T d) - takes a T d and removes that node from the tree
-
-bool contains(T d) - checks if the tree contains the node T d 
-
-void printTreeInOrder() - prints out the contents of the tree in order
-
-void printToFile(ofstream &writer) - prints out the contents of the tree to runLog.txt
-
-T getByID(int id) - takes an int id and returns a T node that has that id
-
-TreeNode<T> *getScapeGoat(TreeNode<T> *newNode) -
-
-void rebuildSubTree(TreeNode<T> *subTreeRoot) -
-
-int buildArray(TreeNode<T> *node, TreeNode<T> *arr[], int i) -
-
-TreeNode<T> *buildBalancedArray(TreeNode<T> **arr, int i, int n) - 
-
-bool containsByID(int id) - takes an int id and checks if the tree contains a node with that id
-
-void removeByID(int id) - takes an int id and removes the node with the corresponding id
-*/
-
 #ifndef SCAPEGOATST_H
 #define SCAPEGOATST_H
 
 #include "TreeNode.h"
 #include <fstream>
 #include <cmath>
-
 template <typename T>
 class ScapegoatST
 {
@@ -99,8 +53,6 @@ ScapegoatST<T>::ScapegoatST()
 {
   m_root = NULL;
   m_size = 0;
-  m_del = 0;
-  m_depth = 0;
 }
 
 template <typename T>
@@ -145,8 +97,9 @@ void ScapegoatST<T>::insertHelper(TreeNode<T> *&subTreeRoot, TreeNode<T> *newNod
   {
     subTreeRoot = newNode;
     if (m_depth > log2(m_size) / log2(1.5))
-    { // checking if the node inserted is too deep
+    { // checking if the node inserted is too deep and tree is becoming imbalanced.
     cout << log2(m_size) / log2(1.5) << endl;
+    //find scapegoat node 
       TreeNode<T> *scapeGoat = getScapeGoat(newNode);
       if (scapeGoat->parent != NULL)
       {
@@ -311,13 +264,13 @@ TreeNode<T> *ScapegoatST<T>::getSuccessor(TreeNode<T> *rightChild)
 template <typename T>
 void ScapegoatST<T>::remove(T d)
 {
-  // check if empty
+  //creating findtarget nodes
   TreeNode<T> *target = NULL;
   TreeNode<T> *parent = NULL;
   target = m_root;
   findTarget(d, target, parent);
   if (target == NULL)
-  { // value wasn't in tree, othing to do
+  { // value wasn't in tree, nothing to do
     return;
   }
   // check if leaf (including the root)
@@ -376,11 +329,13 @@ void ScapegoatST<T>::remove(T d)
     --m_size;
     delete target;
     delete parent;
+    //checks if there have been too many consecutive deletes without insertions and therefore the tree has become unbalanced
     if (m_del > 2 * m_size)
     {
       rebuildSubTree(m_root);
     }
   }
+  m_size--;
 }
 
 template <typename T>
@@ -400,24 +355,28 @@ void ScapegoatST<T>::printToFileHelper(TreeNode<T> *subTreeRoot, ofstream &write
   }
 }
 
-// need to implement these three
+//gets a node by id passed in
 template <typename T>
 T ScapegoatST<T>::getByID(int id)
 {
   return getByIDHelper(id, m_root);
 }
 
+
 template <typename T>
 T ScapegoatST<T>::getByIDHelper(int id, TreeNode<T> *subTreeRoot)
 {
+  //checks if tree is empty
   if (subTreeRoot == NULL)
   {
     return NULL;
   }
+  //checks if current node matches passed in id
   else if (subTreeRoot->getData()->getid() == id)
   {
     return subTreeRoot->getData();
   }
+  //treverses if through tree recursively to find id that was passed in
   else if (subTreeRoot->getData()->getid() < id)
   {
     return getByIDHelper(id, subTreeRoot->m_right);
@@ -431,19 +390,20 @@ T ScapegoatST<T>::getByIDHelper(int id, TreeNode<T> *subTreeRoot)
 template <typename T>
 bool ScapegoatST<T>::containsByID(int id)
 {
-  // if (m_root == NULL) return false;
+  if (m_root == NULL) return false;
   return containsByIDHelper(m_root, id);
 }
 
 template <typename T>
 bool ScapegoatST<T>::containsByIDHelper(TreeNode<T> *subTreeRoot, int id)
 {
+  //treverses through subtree recursively and checks each node with id passed in, returns false if reaches a leaf
   if (subTreeRoot == NULL)
   {
     return false;
   }
   else if (id == subTreeRoot->m_data->getid())
-  {
+  
     return true;
   }
   else if (id < subTreeRoot->m_data->getid())
@@ -461,9 +421,9 @@ void ScapegoatST<T>::removeByID(int id)
 {
   if (m_root == NULL)
     return;
+    //checks if current nodes id = the id passed in and removes using normal remove function if so
   if (m_root->getData()->getid() == id)
     remove(m_root->getData());
-  // recursive call
 
   // check if empty
   TreeNode<T> *target = NULL;
