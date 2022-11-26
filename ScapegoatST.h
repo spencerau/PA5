@@ -1,9 +1,55 @@
+/*
+Spencer Au
+ID: 002385256
+spau@chapman.edu
+
+Partner:
+Ben Fellows
+bfellows@chapman.edu
+
+CPSC 350 - Section 2
+PA5
+
+ScapegoatST() - constructor that intializes the root to null and sets del, depth, and size to 0
+
+virtual ~ScapegoatST() - deletes the root
+
+int getSize(TreeNode<T> *subTreeRoot) - takes a subroot and returns the size of the corresponding subtree
+
+int getSize() - returns size
+
+void insert(T d) - takes a T d and inserts that node into the tree
+
+void remove(T d) - takes a T d and removes that node from the tree
+
+bool contains(T d) - checks if the tree contains the node T d 
+
+void printTreeInOrder() - prints out the contents of the tree in order
+
+void printToFile(ofstream &writer) - prints out the contents of the tree to runLog.txt
+
+T getByID(int id) - takes an int id and returns a T node that has that id
+
+TreeNode<T> *getScapeGoat(TreeNode<T> *newNode) -
+
+void rebuildSubTree(TreeNode<T> *subTreeRoot) -
+
+int buildArray(TreeNode<T> *node, TreeNode<T> *arr[], int i) -
+
+TreeNode<T> *buildBalancedArray(TreeNode<T> **arr, int i, int n) - 
+
+bool containsByID(int id) - takes an int id and checks if the tree contains a node with that id
+
+void removeByID(int id) - takes an int id and removes the node with the corresponding id
+*/
+
 #ifndef SCAPEGOATST_H
 #define SCAPEGOATST_H
 
 #include "TreeNode.h"
 #include <fstream>
 #include <cmath>
+
 template <typename T>
 class ScapegoatST
 {
@@ -53,6 +99,8 @@ ScapegoatST<T>::ScapegoatST()
 {
   m_root = NULL;
   m_size = 0;
+  m_del = 0;
+  m_depth = 0;
 }
 
 template <typename T>
