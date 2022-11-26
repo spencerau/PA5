@@ -78,6 +78,8 @@ ScapegoatST<T>::ScapegoatST()
 {
   m_root = NULL;
   m_size = 0;
+  m_del = 0;
+  m_depth = 0;
 }
 
 template <typename T>
