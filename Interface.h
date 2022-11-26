@@ -41,9 +41,6 @@ public:
     Interface();
     ~Interface();
     void run();
-    void test8();
-    void test9();
-    void test11();
     
 private:
     ScapegoatST<Student*> *students;

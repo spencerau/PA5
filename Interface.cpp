@@ -42,24 +42,6 @@ Interface::~Interface() {
     delete faculty;
 }
 
-void Interface::testPeople() {
-    Faculty *linstead = new Faculty(000, "Linstead", "Javascript Senpai", "Code Monkey Dept");
-    faculty->insert(linstead);
-    Faculty *stevens = new Faculty(111, "Stevens", "Code Monkey", "Computer Science");
-    faculty->insert(stevens);
-
-    Student *student1 = new Student(12345, "Student1", "Freshman", "CS", 0.5, 000);
-    students->insert(student1);
-    linstead->addStudent(12345);
-
-    Student *student2 = new Student(678910, "Student2", "Senior", "Code Monkey", 0.6, 111);
-    students->insert(student2);
-    stevens->addStudent(678910);
-
-    Student *student3 = new Student(333, "Student3", "code monkey", "test major 12345", 1.1, 000);
-    students->insert(student3);
-    linstead->addStudent(333);
-}
 
 
 void Interface::run() {
@@ -69,7 +51,6 @@ void Interface::run() {
     int id;
     string line;
 
-    testPeople();
 
     while (result != 11) {
         printOptions();
@@ -92,7 +73,6 @@ void Interface::run() {
                 if (!isEmpty(0)) {
                     cout << "Display Student:" << endl;
                     id = promptForStudent(0);
-                    cout << "promoptForStudent() is working" << endl;
                     printStudent(id);
                 }
                 break;
@@ -363,36 +343,4 @@ bool Interface::isEmpty(int flag) {
             return true;
         } else return false;
     }
-}
-
-void Interface::test8() {
-    testPeople();
-    deleteFaculty(111);
-    printAllFaculty();
-    printAllStudents();
-}
-
-void Interface::test9() {
-    testPeople();
-    cout << "BEFORE" << endl;
-    printStudent(12345);
-    cout << "Old Advisor: " << endl;
-    printFaculty(0);
-    cout << "New Advisor: " << endl;
-    printFaculty(111);
-
-    changeAdvisor(12345, 111);
-
-    cout << "----------------------------" << endl;
-    cout << "AFTER" << endl;
-    printStudent(12345);
-    cout << "Old Advisor: " << endl;
-    printFaculty(0);
-    cout << "New Advisor: " << endl;
-    printFaculty(111);
-}
-
-void Interface::test11() {
-    testPeople();
-    writeToFile();
 }
