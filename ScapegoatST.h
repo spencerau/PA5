@@ -1,3 +1,28 @@
+/*
+Ben Fellows
+ID: 02369768
+bfellows@chapman.edu
+
+Partner:
+Spencer Au
+ID: 002385256
+spau@chapman.edu
+
+CPSC 350 - Section 2
+PA5
+
+ScapegoatST.h is based upon the BST code that was written in class which modifies the given remove and insert functions to check if the tree is becoming imbalanced
+methods to rebalance the tree have been implemented including rebuildSubTree, buildArray, buildBalancedArray
+
+rebuildSubtree() - uses buildArray and buildBalancedArray rebuild the subtree to be balanced.
+buildArray() - treverses the tree and copies the elements to an array
+buildBalancedArray() - takes in an Array of elements and seperates them into two halfs of the array to build a balanced tree
+getScapeGoat() - finds the scapegoat in a tree by treversing up the insertion path and checking the size of current node respective to its parents node
+getByID() - searches for a node and returns based on the id
+
+*/
+
+
 #ifndef SCAPEGOATST_H
 #define SCAPEGOATST_H
 
@@ -64,9 +89,11 @@ ScapegoatST<T>::~ScapegoatST()
   }
 }
 
+//overloaded getsize method that takes in a node and returns the size of the subtree under the node passed in
 template <typename T>
 int ScapegoatST<T>::getSize(TreeNode<T> *subtreeRoot)
 {
+  //if subroot is null return 0 as size if so
   if (subtreeRoot == NULL)
   {
     return 0;
@@ -79,14 +106,16 @@ int ScapegoatST<T>::getSize()
 {
   return m_size;
 }
-
+//same as provided insert function but checks if tree is becoming imbalanced
 template <typename T>
 void ScapegoatST<T>::insert(T d)
 {
   TreeNode<T> *newNode = new TreeNode<T>(d);
   insertHelper(m_root, newNode);
+  //increments m_size and m_del to keep track of difference between size and number of deletions
   ++m_size;
   ++m_del;
+  //sets depth = 0 so that the inserthelper can keep track of the current node being inserted
   m_depth = 0;
 }
 
@@ -96,8 +125,10 @@ void ScapegoatST<T>::insertHelper(TreeNode<T> *&subTreeRoot, TreeNode<T> *newNod
   if (subTreeRoot == NULL)
   {
     subTreeRoot = newNode;
+    //checks if tree is becoming imbalanced based on if depth of current node > log base 3/2 of tree size
     if (m_depth > log2(m_size) / log2(1.5))
-    { // checking if the node inserted is too deep and tree is becoming imbalanced.
+    {
+  }
     cout << log2(m_size) / log2(1.5) << endl;
     //find scapegoat node 
       TreeNode<T> *scapeGoat = getScapeGoat(newNode);
@@ -110,7 +141,6 @@ void ScapegoatST<T>::insertHelper(TreeNode<T> *&subTreeRoot, TreeNode<T> *newNod
         rebuildSubTree(scapeGoat);
       }
     }
-  }
   else if (newNode->m_data->getid() < subTreeRoot->m_data->getid())
   {
     m_depth++;
@@ -260,7 +290,7 @@ TreeNode<T> *ScapegoatST<T>::getSuccessor(TreeNode<T> *rightChild)
   }
   return rightChild;
 }
-
+//same as provided remove function but checks if the tree is becoming imbalanced
 template <typename T>
 void ScapegoatST<T>::remove(T d)
 {
@@ -355,14 +385,14 @@ void ScapegoatST<T>::printToFileHelper(TreeNode<T> *subTreeRoot, ofstream &write
   }
 }
 
-//gets a node by id passed in
+//gets a node by data->id instead of just checking the nodes key
 template <typename T>
 T ScapegoatST<T>::getByID(int id)
 {
   return getByIDHelper(id, m_root);
 }
 
-
+//helper function to recursevly treverse through tree to find node with matching id
 template <typename T>
 T ScapegoatST<T>::getByIDHelper(int id, TreeNode<T> *subTreeRoot)
 {
@@ -393,7 +423,7 @@ bool ScapegoatST<T>::containsByID(int id)
   if (m_root == NULL) return false;
   return containsByIDHelper(m_root, id);
 }
-
+//same as contains helper but checks dat
 template <typename T>
 bool ScapegoatST<T>::containsByIDHelper(TreeNode<T> *subTreeRoot, int id)
 {
@@ -403,7 +433,7 @@ bool ScapegoatST<T>::containsByIDHelper(TreeNode<T> *subTreeRoot, int id)
     return false;
   }
   else if (id == subTreeRoot->m_data->getid())
-  
+  {
     return true;
   }
   else if (id < subTreeRoot->m_data->getid())
@@ -416,6 +446,7 @@ bool ScapegoatST<T>::containsByIDHelper(TreeNode<T> *subTreeRoot, int id)
   }
 }
 
+//same as remove but checks for data->id instead of just checking the nodes data
 template <typename T>
 void ScapegoatST<T>::removeByID(int id)
 {
@@ -497,6 +528,7 @@ void ScapegoatST<T>::removeByID(int id)
   --m_size;
 }
 
+//same as findtarget but checks for data->id instead of just checking the node data
 template <typename T>
 void ScapegoatST<T>::findTargetByID(int id, TreeNode<T> *&target, TreeNode<T> *&parent)
 {
@@ -513,66 +545,47 @@ void ScapegoatST<T>::findTargetByID(int id, TreeNode<T> *&target, TreeNode<T> *&
     }
   }
 }
-
+//finds the scapegoat node by comparing the size of each node to its parents size and checking if its disproportionate
 template <typename T>
 TreeNode<T> *ScapegoatST<T>::getScapeGoat(TreeNode<T> *newNode)
 {
+    //climbs up through insertion path recursively and checks the size of the subtree compared to the parent
   if (newNode->parent != NULL)
   {
-    TreeNode<T> *parentNode = newNode->parent;
-    while (3 * getSize(parentNode) <= 2 * getSize(parentNode->parent))
+    TreeNode<T> *currentNode = newNode->parent;
+    while (3 * getSize(currentNode) <= 2 * getSize(currentNode->parent))
     {
-      parentNode = parentNode->parent;
+      currentNode = currentNode->parent;
     }
-    return parentNode;
+    //returns the node from last loop which didnt pass the size test to check for tree balance
+    return currentNode;
   }
+  //if the subtreeroot passed in is the root return the subtreeroot
   return newNode;
 }
-//method to rebuild a subtree using buildarray and buildbalanced array
-template <typename T>
-void ScapegoatST<T>::rebuildSubTree(TreeNode<T> *subTreeRoot)
-{
-  TreeNode<T> *parentNode = subTreeRoot->parent;
-  int size = getSize(subTreeRoot);
-  TreeNode<T> **tempArr= new TreeNode<T> *[size];
-  buildArray(subTreeRoot, tempArr, 0);
-  if (parentNode == NULL)
-  {
-    m_root = buildBalancedArray(tempArr, 0, size);
-    m_root->parent = NULL;
-  }
-  else if (parentNode->m_right == subTreeRoot)
-  {
-    parentNode->m_right = buildBalancedArray(tempArr, 0, size);
-    parentNode->m_right->parent = parentNode;
-  }
-  else
-  {
-    parentNode->m_left = buildBalancedArray(tempArr, 0, size);
-    parentNode->m_left->parent = parentNode;
-  }
-}
+
 //method to build array from inorder traversal of tree
 template <typename T>
 int ScapegoatST<T>::buildArray(TreeNode<T> *node, TreeNode<T> *arr[], int i)
 {
   if (node == NULL)
-  //check if node passed is null and return i if it is
+  //check if the recursive call reached end of the tree and return size if it is
   {
     return i;
   }
   else
   {
-    //preform inorder treversal and copy to array
+    //preform inorder treversal and copy to array by recursively calling build array
     i = buildArray(node->m_left, arr, i);
     arr[i++] = node;
     return buildArray(node->m_right, arr, i);
   }
 }
-//method to build balanced array representation of an array from an array
+//method to build balanced array representation of a tree from an array takes in the unbalanced array, int i which is used to index the array, and int j which is the size of the array
 template <typename T>
 TreeNode<T> *ScapegoatST<T>::buildBalancedArray(TreeNode<T> **arr, int i, int j)
 {
+  //chekcs if the array and tree are empty
   if (j == 0)
   {
     return NULL;
@@ -580,6 +593,7 @@ TreeNode<T> *ScapegoatST<T>::buildBalancedArray(TreeNode<T> **arr, int i, int j)
   //find median index of array
   int k = j / 2;
   arr[i + k]->m_left = buildBalancedArray(arr, i, k);
+  //fills the array from the left half and the right half alternating to make a balanced tree
   if (arr[i + k]->m_left != NULL)
   {
     arr[i + k]->m_left->parent = arr[i + k];
@@ -591,5 +605,29 @@ TreeNode<T> *ScapegoatST<T>::buildBalancedArray(TreeNode<T> **arr, int i, int j)
   }
   return arr[i + k];
 }
-
+//method to rebuild a subtree using buildarray and buildbalanced array
+template <typename T>
+void ScapegoatST<T>::rebuildSubTree(TreeNode<T> *subTreeRoot)
+{
+  TreeNode<T> *currentNode = subTreeRoot->parent;
+  int size = getSize(subTreeRoot);
+  TreeNode<T> **tempArr= new TreeNode<T> *[size];
+  buildArray(subTreeRoot, tempArr, 0);
+  //checks if the node is a right child or left child or root and rebulds the tree then respects the parents respectively
+  if (currentNode == NULL)
+  {
+    m_root = buildBalancedArray(tempArr, 0, size);
+    m_root->parent = NULL;
+  }
+  else if (currentNode->m_right == subTreeRoot)
+  {
+    currentNode->m_right = buildBalancedArray(tempArr, 0, size);
+    currentNode->m_right->parent = currentNode;
+  }
+  else
+  {
+    currentNode->m_left = buildBalancedArray(tempArr, 0, size);
+    currentNode->m_left->parent = currentNode;
+  }
+}
 #endif
