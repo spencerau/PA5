@@ -1,3 +1,18 @@
+/*
+Spencer Au
+ID: 002385256
+spau@chapman.edu
+
+Partner:
+Ben Fellows
+bfellows@chapman.edu
+
+CPSC 350 - Section 2
+PA5
+
+
+*/
+
 #ifndef SCAPEGOATST_H
 #define SCAPEGOATST_H
 

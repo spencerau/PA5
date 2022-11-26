@@ -1,4 +1,15 @@
 /*
+Spencer Au
+ID: 002385256
+spau@chapman.edu
+
+Partner:
+Ben Fellows
+bfellows@chapman.edu
+
+CPSC 350 - Section 2
+PA5
+
 Your program will keep references to both the faculty and student tables in memory. These references are simply ScapegoatST instances.
 Once the tables have been created, a menu should be presented to the user to allow them to manipulate the database. The choices should include:
 1. Print all students and their information (sorted by ascending id #)
@@ -32,16 +43,22 @@ just printed to the file instead of the terminal).
 
 using namespace std;
 
+/*
+Interface() - constructor that initalizes the student and faculty trees
+*/
 Interface::Interface() {
     this->students = new ScapegoatST<Student*>();
     this->faculty = new ScapegoatST<Faculty*>();
 }
 
+/*
+~Interface() - deletes the student and faculty trees
+*/
 Interface::~Interface() {
     delete students;
     delete faculty;
 }
-
+/*
 void Interface::testPeople() {
     Faculty *linstead = new Faculty(000, "Linstead", "Javascript Senpai", "Code Monkey Dept");
     faculty->insert(linstead);
@@ -60,16 +77,17 @@ void Interface::testPeople() {
     students->insert(student3);
     linstead->addStudent(333);
 }
+*/
 
-
+/*
+void run() - simulates the menu, and uses a switch statement to choose options 1 to 11, and exits upon option 11
+*/
 void Interface::run() {
     int result = -1;
     int facultyid;
     int studentid;
     int id;
     string line;
-
-    testPeople();
 
     while (result != 11) {
         printOptions();
@@ -170,6 +188,7 @@ void Interface::run() {
 
 }
 
+// void printOptions() - prints out the menu options at the top
 void Interface::printOptions() {
     cout << "1. Print all students and their information (sorted by ascending id #)" << endl;
     cout << "2. Print all faculty and their information (sorted by ascending id #)" << endl;
@@ -184,26 +203,31 @@ void Interface::printOptions() {
     cout << "11. Exit" << endl;
 }
 
+// void printAllStudents() - Print all students and their information (sorted by ascending id #)
 void Interface::printAllStudents() {
     students->printTreeInOrder();
 }
 
+// void printAllFaculty() - Print all faculty and their information (sorted by ascending id #)
 void Interface::printAllFaculty() {
     faculty->printTreeInOrder();
 }
 
+// void printStudent(int id) - takes an int id and prints out that student
 void Interface::printStudent(int id) {
     Student *student = students->getByID(id);
     student->printInfo();
     //delete student;
 }
 
+// void printFaculty(int id) - takes an int id and prints out that faculty
 void Interface::printFaculty(int id) {
     Faculty *advisor = faculty->getByID(id);
     advisor->printInfo();
     //delete advisor;
 }
 
+// void addStudent() - adds a new student
 void Interface::addStudent() {
     int id = promptForStudent(1);
 
@@ -235,6 +259,7 @@ void Interface::addStudent() {
     students->insert(newStudent);
 }
 
+// void deleteStudent(int id) - takes an int id and deletes that student and also removes them from their advisor's advisees list
 void Interface::deleteStudent(int id) {
     Student &student = *students->getByID(id);
     int advisor = student.getAdvisor();
@@ -242,6 +267,7 @@ void Interface::deleteStudent(int id) {
     students->removeByID(id);
 }
 
+// void addFaculty() - adds a new faculty member
 void Interface::addFaculty() {
     int id = promptForFaculty(1);
 
@@ -262,6 +288,7 @@ void Interface::addFaculty() {
     faculty->insert(newFaculty);
 }
 
+// void deleteFaculty(int id) - takes an int id and deletes that faculty member and then prompts the user for an id to switch over advisees
 void Interface::deleteFaculty(int id) {
     cout << "Which Advisor would you like to switch the current Advisor's students to?" << endl;
     Faculty *newAdvisor = faculty->getByID(promptForFaculty(0));
@@ -276,6 +303,7 @@ void Interface::deleteFaculty(int id) {
     faculty->removeByID(oldAdvisor->getid());
 }
 
+// void changeAdvisor(int studentid, int facultyid) - takes an int studentid and int facultyid and switches the student to that faculty member
 void Interface::changeAdvisor(int studentid, int facultyid) {
     Student *student = students->getByID(studentid);
     removeAdvisee(studentid, student->getAdvisor());
@@ -284,6 +312,7 @@ void Interface::changeAdvisor(int studentid, int facultyid) {
     student->changeAdvisor(facultyid);
 }
 
+// void removeAdvisee(int studentid, int facultyid) - takes an int studentid and int faculty id and removes that student from the faculty advisees
 void Interface::removeAdvisee(int studentid, int facultyid) {
     Faculty *advisor = faculty->getByID(facultyid);
     advisor->removeStudent(studentid);
@@ -291,6 +320,7 @@ void Interface::removeAdvisee(int studentid, int facultyid) {
     student->changeAdvisor(-1);
 }
 
+// int promptForStudent(int flag) - takes an int flag, and if 0, keeps prompting for an id that exists, and if 1, keeps prompting for a new id
 int Interface::promptForStudent(int flag) {
     int id;
     string line;
@@ -316,6 +346,7 @@ int Interface::promptForStudent(int flag) {
     return id;
 }
 
+// int promptForFaculty(int flag) - takes an int flag, and if 0, keeps prompting for an id that exists, and if 1, keeps prompting for a new id
 int Interface::promptForFaculty(int flag) {
     int id;
     string line;
@@ -340,6 +371,7 @@ int Interface::promptForFaculty(int flag) {
     }
     return id;}
 
+// void writeToFile() - intializes an ofstream writer, and calls students/faculty->writeToFile()
 void Interface::writeToFile() {
     ofstream writer("runLog.txt");
     students->printToFile(writer);
@@ -347,6 +379,7 @@ void Interface::writeToFile() {
     writer.close();
 }
 
+// bool isEmpty(int flag) - takes an int flag, and if 0, checks if the students tree is empty, and if 1, checks if faculty tree is empty
 bool Interface::isEmpty(int flag) {
     if (flag == 0) {
         if (students->getSize() == 0) {
@@ -364,6 +397,7 @@ bool Interface::isEmpty(int flag) {
     }
 }
 
+/*
 void Interface::test8() {
     testPeople();
     deleteFaculty(111);

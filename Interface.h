@@ -1,4 +1,15 @@
 /*
+Spencer Au
+ID: 002385256
+spau@chapman.edu
+
+Partner:
+Ben Fellows
+bfellows@chapman.edu
+
+CPSC 350 - Section 2
+PA5
+
 Your program will keep references to both the faculty and student tables in memory. These references are simply ScapegoatST instances.
 Once the tables have been created, a menu should be presented to the user to allow them to manipulate the database. The choices should include:
 1. Print all students and their information (sorted by ascending id #)
@@ -24,6 +35,36 @@ After each command is executed, the menu should be displayed again, and the user
 If the user selects the Exit option, prior to quitting your program should create a file, named runLog.txt, which contains the information of both 
 tables at the time the program was terminated. (This is the information from option 1 and option 2, 
 just printed to the file instead of the terminal).
+
+Interface() - constructor that initalizes the student and faculty trees
+
+~Interface() - deletes the student and faculty trees
+
+void run() - simulates the menu, and uses a switch statement to choose options 1 to 11, and exits upon option 11
+
+void printOptions() - prints out the menu options at the top
+
+void printAllStudents() - Print all students and their information (sorted by ascending id #)
+void printAllFaculty() - Print all faculty and their information (sorted by ascending id #)
+void printStudent(int id) - takes an int id and prints out that student
+void printFaculty(int id) - takes an int id and prints out that faculty
+
+void addStudent() - adds a new student
+void deleteStudent(int id) - takes an int id and deletes that student and also removes them from their advisor's advisees list
+
+void addFaculty() - adds a new faculty member
+void deleteFaculty(int id) - takes an int id and deletes that faculty member and then prompts the user for an id to switch over advisees
+
+void changeAdvisor(int studentid, int facultyid) - takes an int studentid and int facultyid and switches the student to that faculty member
+
+void removeAdvisee(int studentid, int facultyid) - takes an int studentid and int faculty id and removes that student from the faculty advisees
+
+int promptForStudent(int flag) - takes an int flag, and if 0, keeps prompting for an id that exists, and if 1, keeps prompting for a new id
+int promptForFaculty(int flag) - takes an int flag, and if 0, keeps prompting for an id that exists, and if 1, keeps prompting for a new id
+
+void writeToFile() - intializes an ofstream writer, and calls students/faculty->writeToFile()
+
+bool isEmpty(int flag) - takes an int flag, and if 0, checks if the students tree is empty, and if 1, checks if faculty tree is empty
 */
 
 #ifndef INTERFACE_H
@@ -41,9 +82,11 @@ public:
     Interface();
     ~Interface();
     void run();
+    /*
     void test8();
     void test9();
     void test11();
+    */
     
 private:
     ScapegoatST<Student*> *students;
@@ -66,8 +109,7 @@ private:
     bool isEmpty(int flag);
 
     //int promptByID(int flag);
-
-    void testPeople();
+    //void testPeople();
 };
 
 
