@@ -65,6 +65,8 @@ private:
     void writeToFile();
     bool isEmpty(int flag);
 
+    //int promptByID(int flag);
+
     void testPeople();
 };
 

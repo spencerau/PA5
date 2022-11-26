@@ -134,7 +134,6 @@ void Interface::run() {
             }
             case 9: // Change a student’s advisor given the student id and the new faculty id.
             {
-                // not deleting student id from old advisor
                 if (!isEmpty(0)) {
                     studentid = promptForStudent(0);
                     if (!isEmpty(1)) {
@@ -396,3 +395,27 @@ void Interface::test11() {
     testPeople();
     writeToFile();
 }
+
+/*
+int Interface::promptByID(int flag) {
+    int id;
+    string line;
+    cout << "Enter in the ID" << endl;
+    getline(cin, line);
+    id = stoi(line); 
+    if (flag == 0) {
+        if (!faculty->containsByID(id)) {
+            cout << "That ID does not exist. The command will exit" << endl;
+            return -1;
+        }
+    }
+    else if (flag == 1) {
+        while (faculty->containsByID(id)) {
+            cout << "That ID already exists. The command will exit" << endl;
+            return -1;
+        }
+    }
+    return id;
+}
+*/
+
