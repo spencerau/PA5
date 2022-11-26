@@ -8,40 +8,44 @@ template <typename T>
 class ScapegoatST
 {
 public:
-    ScapegoatST();
-    virtual ~ScapegoatST();
-    int getSize();
-    void insert(T d);
-    void remove(T d);
-    bool contains(T d);
-    void printTreeInOrder();
-    void printTreePostOrder();
-    T getMin();
-    T getMax();
-    T getMedian();
-	void printToFile(ofstream &writer);
-    T getByID(int id);
-    bool containsByID(int id);
-	void removeByID(int id);
+  ScapegoatST();
+  virtual ~ScapegoatST();
+  int getSize(TreeNode<T> *subTreeRoot);
+  int getSize();
+  void insert(T d);
+  void remove(T d);
+  bool contains(T d);
+  void printTreeInOrder();
+  void printTreePostOrder();
+  T getMin();
+  T getMax();
+  T getMedian();
+  void printToFile(ofstream &writer);
+  T getByID(int id);
+  TreeNode<T> *getScapeGoat(TreeNode<T> *newNode);
+  void rebuildSubTree(TreeNode<T> *subTreeRoot);
+  int buildArray(TreeNode<T> *node, TreeNode<T> *arr[], int i);
+  TreeNode<T> *buildBalancedArray(TreeNode<T> **arr, int i, int n);
+  bool containsByID(int id);
+  void removeByID(int id);
 
 private:
-	double m_del;
-	double m_depth;
-	double m_size;
-	TreeNode<T> *m_root;
-	T getMinHelper(TreeNode<T> *subTreeRoot);
-	T getMaxHelper(TreeNode<T> *subTreeRoot);
-	void insertHelper(TreeNode<T> *&subTreeRoot, TreeNode<T> *newNode);
-	bool containsHelper(TreeNode<T> *subTreeRoot, TreeNode<T> *newNode);
-	void printTreeInOrderHelper(TreeNode<T> *subTreeRoot);
-	void printTreePostOrderHelper(TreeNode<T> *subTreeRoot);
-	void findTarget(T key, TreeNode<T> *&target, TreeNode<T> *&parent);
-	TreeNode<T> *getSuccessor(TreeNode<T> *rightChild);
-	void printToFileHelper(TreeNode<T> *subTreeRoot, ofstream &writer);
-	T getByIDHelper(int id, TreeNode<T> *subTreeRoot);
-	bool containsByIDHelper(TreeNode<T> *subTreeRoot, int id);
-	void findTargetByID(int id, TreeNode<T> *&target, TreeNode<T> *&parent);
-
+  double m_del;
+  double m_depth;
+  double m_size;
+  TreeNode<T> *m_root;
+  T getMinHelper(TreeNode<T> *subTreeRoot);
+  T getMaxHelper(TreeNode<T> *subTreeRoot);
+  void insertHelper(TreeNode<T> *&subTreeRoot, TreeNode<T> *newNode);
+  bool containsHelper(TreeNode<T> *subTreeRoot, TreeNode<T> *newNode);
+  void printTreeInOrderHelper(TreeNode<T> *subTreeRoot);
+  void printTreePostOrderHelper(TreeNode<T> *subTreeRoot);
+  void findTarget(T key, TreeNode<T> *&target, TreeNode<T> *&parent);
+  TreeNode<T> *getSuccessor(TreeNode<T> *rightChild);
+  void printToFileHelper(TreeNode<T> *subTreeRoot, ofstream &writer);
+  T getByIDHelper(int id, TreeNode<T> *subTreeRoot);
+  bool containsByIDHelper(TreeNode<T> *subTreeRoot, int id);
+  void findTargetByID(int id, TreeNode<T> *&target, TreeNode<T> *&parent);
 };
 
 template <typename T>
@@ -60,13 +64,15 @@ ScapegoatST<T>::~ScapegoatST()
   }
 }
 
-// template <typename T>
-// int ScapegoatST<T>::getSize(TreeNode<T>* subtreeRoot){
-//   if (subtreeRoot == NULL){ 
-//     return 0;
-//   } 
-//   return 1 + getSize(subtreeRoot->m_left) + getSize(subtreeRoot->m_right); 
-// }
+template <typename T>
+int ScapegoatST<T>::getSize(TreeNode<T> *subtreeRoot)
+{
+  if (subtreeRoot == NULL)
+  {
+    return 0;
+  }
+  return getSize(subtreeRoot->m_left) + getSize(subtreeRoot->m_right) + 1;
+}
 
 template <typename T>
 int ScapegoatST<T>::getSize()
@@ -77,16 +83,11 @@ int ScapegoatST<T>::getSize()
 template <typename T>
 void ScapegoatST<T>::insert(T d)
 {
-	m_depth = 0;
-	TreeNode<T> *newNode = new TreeNode<T>(d);
-	insertHelper(m_root, newNode);
-	++m_size;
-	++m_del;
-  // TreeNode<T> *scapeGoat = new TreeNode<T>;
-  if (m_depth > log2(m_del)/log2(1.5))
-  {
-    // rebuild
-  }
+  TreeNode<T> *newNode = new TreeNode<T>(d);
+  insertHelper(m_root, newNode);
+  ++m_size;
+  ++m_del;
+  m_depth = 0;
 }
 
 template <typename T>
@@ -95,8 +96,20 @@ void ScapegoatST<T>::insertHelper(TreeNode<T> *&subTreeRoot, TreeNode<T> *newNod
   if (subTreeRoot == NULL)
   {
     subTreeRoot = newNode;
+    if (m_depth > log2(m_size) / log2(1.5))
+    { // checking if the node inserted is too deep
+    cout << log2(m_size) / log2(1.5) << endl;
+      TreeNode<T> *scapeGoat = getScapeGoat(newNode);
+      if (scapeGoat->parent != NULL)
+      {
+        rebuildSubTree(scapeGoat->parent);
+      }
+      else
+      {
+        rebuildSubTree(scapeGoat);
+      }
+    }
   }
-  // this is comparing the pointers
   else if (newNode->m_data->getid() < subTreeRoot->m_data->getid())
   {
     m_depth++;
@@ -109,7 +122,6 @@ void ScapegoatST<T>::insertHelper(TreeNode<T> *&subTreeRoot, TreeNode<T> *newNod
     m_depth++;
     insertHelper(subTreeRoot->m_right, newNode);
   }
-
 }
 
 template <typename T>
@@ -152,8 +164,7 @@ void ScapegoatST<T>::printTreeInOrderHelper(TreeNode<T> *subTreeRoot)
   if (subTreeRoot != NULL)
   {
     printTreeInOrderHelper(subTreeRoot->m_left);
-    //cout << subTreeRoot->m_data << endl;
-	subTreeRoot->getData()->printInfo();
+    subTreeRoot->getData()->printInfo();
     printTreeInOrderHelper(subTreeRoot->m_right);
   }
 }
@@ -174,8 +185,6 @@ void ScapegoatST<T>::printTreePostOrderHelper(TreeNode<T> *subTreeRoot)
     cout << subTreeRoot->m_data << endl;
   }
 }
-
-
 
 template <typename T>
 T ScapegoatST<T>::getMin()
@@ -309,7 +318,6 @@ void ScapegoatST<T>::remove(T d)
     {
       if (target == parent->m_left)
       {
-        // cout << "I'm here!" << endl;
         parent->m_left = child;
       }
       else
@@ -317,35 +325,38 @@ void ScapegoatST<T>::remove(T d)
         parent->m_right = child;
       }
     }
+    --m_size;
     delete target;
-    delete target;
+    delete parent;
     if (m_del > 2 * m_size)
     {
-      // rebuild
+      rebuildSubTree(m_root);
     }
   }
-  --m_size;
 }
 
 template <typename T>
-void ScapegoatST<T>::printToFile(ofstream &writer) {
-	printToFileHelper(m_root, writer);
+void ScapegoatST<T>::printToFile(ofstream &writer)
+{
+  printToFileHelper(m_root, writer);
 }
 
 template <typename T>
-void ScapegoatST<T>::printToFileHelper(TreeNode<T> *subTreeRoot, ofstream &writer) {
-	if (subTreeRoot != NULL) {
+void ScapegoatST<T>::printToFileHelper(TreeNode<T> *subTreeRoot, ofstream &writer)
+{
+  if (subTreeRoot != NULL)
+  {
     printToFileHelper(subTreeRoot->m_left, writer);
-    //cout << subTreeRoot->m_data << endl;
-	subTreeRoot->getData()->printToFile(writer);
+    subTreeRoot->getData()->printToFile(writer);
     printToFileHelper(subTreeRoot->m_right, writer);
-	}
+  }
 }
 
 // need to implement these three
 template <typename T>
-T ScapegoatST<T>::getByID(int id) {
-	return getByIDHelper(id, m_root);
+T ScapegoatST<T>::getByID(int id)
+{
+  return getByIDHelper(id, m_root);
 }
 
 template <typename T>
@@ -370,9 +381,10 @@ T ScapegoatST<T>::getByIDHelper(int id, TreeNode<T> *subTreeRoot)
 }
 
 template <typename T>
-bool ScapegoatST<T>::containsByID(int id) {
-	//if (m_root == NULL) return false;
-	return containsByIDHelper(m_root, id);
+bool ScapegoatST<T>::containsByID(int id)
+{
+  // if (m_root == NULL) return false;
+  return containsByIDHelper(m_root, id);
 }
 
 template <typename T>
@@ -397,82 +409,84 @@ bool ScapegoatST<T>::containsByIDHelper(TreeNode<T> *subTreeRoot, int id)
 }
 
 template <typename T>
-void ScapegoatST<T>::removeByID(int id) {
-	if (m_root == NULL) return;
-	if (m_root->getData()->getid() == id) remove(m_root->getData());
-	// recursive call
+void ScapegoatST<T>::removeByID(int id)
+{
+  if (m_root == NULL)
+    return;
+  if (m_root->getData()->getid() == id)
+    remove(m_root->getData());
+  // recursive call
 
-	// check if empty
-	TreeNode<T> *target = NULL;
-	TreeNode<T> *parent = NULL;
-	target = m_root;
-	findTargetByID(id, target, parent);
-	if (target == NULL)
-	{ // value wasn't in tree, othing to do
-		return;
-	}
-	// check if leaf (including the root)
-	if (target->m_left == NULL && target->m_right == NULL)
-	{ // no children, it's a leaf
-		if (target == m_root)
-		{ // leaf is the root of tree
-		m_root = NULL;
-		}
-		else
-		{ // it's not the root
-		if (target == parent->m_left)
-		{
-			parent->m_left = NULL;
-		}
-		else
-		{
-			parent->m_right = NULL;
-		}
-		}
-		// delete target; //free the memory
-	}
-	else if (target->m_left != NULL && target->m_right != NULL)
-	{ // 2 child case
-		TreeNode<T> *suc = getSuccessor(target->m_right);
-		T value = suc->m_data;
-		remove(value); // remove successor treenode
-		target->m_data = value;
-	}
-	else
-	{ // 1 child
-		TreeNode<T> *child;
-		if (target->m_left != NULL)
-		{
-		child = target->m_left;
-		}
-		else
-		{
-		child = target->m_right;
-		}
-		if (target == m_root)
-		{
-		m_root = child;
-		}
-		else
-		{
-		if (target == parent->m_left)
-		{
-			// cout << "I'm here!" << endl;
-			parent->m_left = child;
-		}
-		else
-		{
-			parent->m_right = child;
-		}
-		}
-		delete target;
-		delete target;
-		if (m_del > 2 * m_size)
-		{
-		// rebuild
-		}
-	}
-	--m_size;
+  // check if empty
+  TreeNode<T> *target = NULL;
+  TreeNode<T> *parent = NULL;
+  target = m_root;
+  findTargetByID(id, target, parent);
+  if (target == NULL)
+  { // value wasn't in tree, othing to do
+    return;
+  }
+  // check if leaf (including the root)
+  if (target->m_left == NULL && target->m_right == NULL)
+  { // no children, it's a leaf
+    if (target == m_root)
+    { // leaf is the root of tree
+      m_root = NULL;
+    }
+    else
+    { // it's not the root
+      if (target == parent->m_left)
+      {
+        parent->m_left = NULL;
+      }
+      else
+      {
+        parent->m_right = NULL;
+      }
+    }
+    // delete target; //free the memory
+  }
+  else if (target->m_left != NULL && target->m_right != NULL)
+  { // 2 child case
+    TreeNode<T> *suc = getSuccessor(target->m_right);
+    T value = suc->m_data;
+    remove(value); // remove successor treenode
+    target->m_data = value;
+  }
+  else
+  { // 1 child
+    TreeNode<T> *child;
+    if (target->m_left != NULL)
+    {
+      child = target->m_left;
+    }
+    else
+    {
+      child = target->m_right;
+    }
+    if (target == m_root)
+    {
+      m_root = child;
+    }
+    else
+    {
+      if (target == parent->m_left)
+      {
+        parent->m_left = child;
+      }
+      else
+      {
+        parent->m_right = child;
+      }
+    }
+    delete target;
+    delete parent;
+    if (m_del > 2 * m_size)
+    {
+      rebuildSubTree(m_root);
+    }
+  }
+  --m_size;
 }
 
 template <typename T>
@@ -490,6 +504,84 @@ void ScapegoatST<T>::findTargetByID(int id, TreeNode<T> *&target, TreeNode<T> *&
       target = target->m_right;
     }
   }
+}
+
+template <typename T>
+TreeNode<T> *ScapegoatST<T>::getScapeGoat(TreeNode<T> *newNode)
+{
+  if (newNode->parent != NULL)
+  {
+    TreeNode<T> *parentNode = newNode->parent;
+    while (3 * getSize(parentNode) <= 2 * getSize(parentNode->parent))
+    {
+      parentNode = parentNode->parent;
+    }
+    return parentNode;
+  }
+  return newNode;
+}
+//method to rebuild a subtree using buildarray and buildbalanced array
+template <typename T>
+void ScapegoatST<T>::rebuildSubTree(TreeNode<T> *subTreeRoot)
+{
+  TreeNode<T> *parentNode = subTreeRoot->parent;
+  int size = getSize(subTreeRoot);
+  TreeNode<T> **tempArr= new TreeNode<T> *[size];
+  buildArray(subTreeRoot, tempArr, 0);
+  if (parentNode == NULL)
+  {
+    m_root = buildBalancedArray(tempArr, 0, size);
+    m_root->parent = NULL;
+  }
+  else if (parentNode->m_right == subTreeRoot)
+  {
+    parentNode->m_right = buildBalancedArray(tempArr, 0, size);
+    parentNode->m_right->parent = parentNode;
+  }
+  else
+  {
+    parentNode->m_left = buildBalancedArray(tempArr, 0, size);
+    parentNode->m_left->parent = parentNode;
+  }
+}
+//method to build array from inorder traversal of tree
+template <typename T>
+int ScapegoatST<T>::buildArray(TreeNode<T> *node, TreeNode<T> *arr[], int i)
+{
+  if (node == NULL)
+  //check if node passed is null and return i if it is
+  {
+    return i;
+  }
+  else
+  {
+    //preform inorder treversal and copy to array
+    i = buildArray(node->m_left, arr, i);
+    arr[i++] = node;
+    return buildArray(node->m_right, arr, i);
+  }
+}
+//method to build balanced array representation of an array from an array
+template <typename T>
+TreeNode<T> *ScapegoatST<T>::buildBalancedArray(TreeNode<T> **arr, int i, int j)
+{
+  if (j == 0)
+  {
+    return NULL;
+  }
+  //find median index of array
+  int k = j / 2;
+  arr[i + k]->m_left = buildBalancedArray(arr, i, k);
+  if (arr[i + k]->m_left != NULL)
+  {
+    arr[i + k]->m_left->parent = arr[i + k];
+  }
+  arr[i + k]->m_right = buildBalancedArray(arr, i + k + 1, j - k - 1);
+  if (arr[i + k]->m_right != NULL)
+  {
+    arr[i + k]->m_right->parent = arr[i + k];
+  }
+  return arr[i + k];
 }
 
 #endif
